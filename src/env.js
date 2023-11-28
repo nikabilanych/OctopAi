@@ -13,7 +13,8 @@ export const env = createEnv({
       .refine(
         (str) =>
           !str.includes(
-            "mysql://z98c98mmso5c4zv3gedw:pscale_pw_JmhBm6br8vDHDldq8xgV690hxyA6CnR68Jz9wJjYeu2@aws.connect.psdb.cloud/jobifai?sslaccept=strict",
+            'mysql://zgutxyopd8k9v9vntxiw:pscale_pw_zyAMWFipZq74NJY85bv2F5FDNaRG8I0H4Ok1jyL5Uuc@aws.connect.psdb.cloud/jobifai?sslaccept=strict'
+
           ),
         "You forgot to change the default URL",
       ),
@@ -32,8 +33,8 @@ export const env = createEnv({
       process.env.VERCEL ? z.string() : z.string().url(),
     ),
     // Add ` on ID and SECRET if you want to make sure they're not empty
-    DISCORD_CLIENT_ID: z.string(),
-    DISCORD_CLIENT_SECRET: z.string(),
+    Google_CLIENT_ID: z.string(),
+    google_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -54,8 +55,8 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    Google_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    google_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

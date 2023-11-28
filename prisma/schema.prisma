@@ -48,7 +48,7 @@ model User {
     image          String?
     accounts       Account[]
     sessions       Session[]
-    WorkExperience WorkExperience[]
+    WorkExperience UserExperience[]
 }
 
 model VerificationToken {
@@ -59,41 +59,45 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model WorkExperience {
-    id             String    @id @default(cuid())
-    userId         String
-    user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    fieldsInterest String
-    field          JobFields @relation(fields: [fieldsInterest], references: [id], onDelete: Cascade)
-    skills         String
+model UserExperience {
+    id                String @id @default(cuid())
+    userId            String
+    user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    fieldsInterest    String
+    positionsInterest String
+    userSkill         String
 
     @@index([userId])
-    @@index([fieldsInterest])
 }
 
-model Job {
-    id      String    @id @default(cuid())
-    name    String
-    fieldId String
-    skills  String
-    field   JobFields @relation(fields: [fieldId], references: [id], onDelete: Cascade)
-    Skills  Skills[]
+model JobIndustry {
+    id   String @id @default(cuid())
+    name String
 
-    @@index([fieldId])
+    Position Position[]
+    Skill    Skill[]
 }
 
-model Skills {
-    id    String @id @default(cuid())
-    name  String
-    jobId String
-    job   Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+model Position {
+    id         String      @id @default(cuid())
+    name       String
+    industryId String
+    industry   JobIndustry @relation(fields: [industryId], references: [id], onDelete: Cascade)
 
+    Skill Skill[]
+
+    @@index([industryId])
+}
+
+model Skill {
+    id         String      @id @default(cuid())
+    name       String
+    industryId String
+    industry   JobIndustry @relation(fields: [industryId], references: [id], onDelete: Cascade)
+    jobId      String
+    job        Position    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+    @@index([industryId])
     @@index([jobId])
 }
 
-model JobFields {
-    id              String           @id @default(cuid())
-    name            String
-    positions       Job[]
-    workExperiences WorkExperience[]
-}

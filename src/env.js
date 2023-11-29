@@ -13,8 +13,7 @@ export const env = createEnv({
       .refine(
         (str) =>
           !str.includes(
-            'mysql://zgutxyopd8k9v9vntxiw:pscale_pw_zyAMWFipZq74NJY85bv2F5FDNaRG8I0H4Ok1jyL5Uuc@aws.connect.psdb.cloud/jobifai?sslaccept=strict'
-
+            "mysql://ov1em0g24urvlaidvknu:pscale_pw_wvytpz15OauqnP4JDxTuTIurnIZHTHH4dAaaNVEPQIg@eu-central.connect.psdb.cloud/jobifai?sslaccept=strict",
           ),
         "You forgot to change the default URL",
       ),

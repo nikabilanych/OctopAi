@@ -50,7 +50,7 @@ model User {
     sessions       Session[]
     userExperience UserExperience[]
     matches        Match[]
-    songs          Songs[]
+    playlist       Playlist[]
 }
 
 model VerificationToken {
@@ -61,66 +61,84 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
+model Industry {
+    id        Int                  @id @default(autoincrement())
+    name      String
+    positions PositionOnIndustry[]
+}
+
+model Position {
+    id         Int                  @id @default(autoincrement())
+    name       String 
+    industries PositionOnIndustry[]
+    skills     PositionOnSkill[]
+}
+
+model Skill {
+    id        Int               @id @default(autoincrement())
+    name      String
+    positions PositionOnSkill[]
+}
+
+model PositionOnIndustry {
+    industryId Int
+    positionId Int
+    industry   Industry @relation(fields: [industryId], references: [id])
+    position   Position @relation(fields: [positionId], references: [id])
+
+    @@id([industryId, positionId])
+    @@index([industryId])
+    @@index([positionId])
+}
+
+model PositionOnSkill {
+    positionId Int
+    position   Position @relation(fields: [positionId], references: [id])
+    skillId    Int
+    skill      Skill    @relation(fields: [skillId], references: [id])
+
+    @@id([positionId, skillId])
+    @@index([positionId])
+    @@index([skillId])
+}
+
 model UserExperience {
-    id                String @id @default(cuid())
-    userId            String
-    user              User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    fieldsInterest    String
-    positionsInterest String
-    userSkill         String
+    id         Int     @id @default(autoincrement())
+    user       User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    userId     String
+    industries String
+    positions  String?
+    userSkill  String
 
     @@index([userId])
 }
 
-model JobIndustry {
-    id   String @id @default(cuid())
-    name String
-
-    Position Position[]
-    Skill    Skill[]
-}
-
-model Position {
-    id         String      @id @default(cuid())
-    name       String
-    industryId String
-    industry   JobIndustry @relation(fields: [industryId], references: [id], onDelete: Cascade)
-
-    Skill Skill[]
-
-    @@index([industryId])
-}
-
-model Skill {
-    id         String      @id @default(cuid())
-    name       String
-    industryId String
-    industry   JobIndustry @relation(fields: [industryId], references: [id], onDelete: Cascade)
-    jobId      String
-    job        Position    @relation(fields: [jobId], references: [id], onDelete: Cascade)
-
-    @@index([industryId])
-    @@index([jobId])
-}
-
 model Match {
-    id     String @id @default(cuid())
-    userId String
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    jobs   String
-    
-    industries String
+    id        String @id @default(cuid())
+    userId    String
+    user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    positions String
 
     @@index([userId])
 }
 
 model Songs {
-    id     String @id @default(cuid())
-    userId String
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    name        String
+    id          Int      @id @default(autoincrement())
+    playlistId  Int
+    playlist    Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+    title       String
     url         String
-    description String
+    description String?
+
+    @@index([playlistId])
+}
+
+model Playlist {
+    id     Int     @id @default(autoincrement())
+    userId String
+    user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    title  String
+    songs  Songs[]
+
     @@index([userId])
 }

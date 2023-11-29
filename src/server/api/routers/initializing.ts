@@ -6,7 +6,14 @@ import {
 } from "../trpc";
 
 
+// create - user experience user id - ctx userid
+// fieldsofinterest - z.array(z.string())
+// fieldsofinterest - z.array(z.string())
+// fieldsofinterest - z.array(z.string())
 
+// match output
+// take industries (not optional!) -> db.jobindustry.findMany-> query -> name (find positions tied to that name)
+// take skills (not optional!) -> db.jobskill
 
 export const workExperienceRouter = createTRPCRouter({
   helloInit:protectedProcedure.query(({ ctx }) => {

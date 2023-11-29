@@ -1,6 +1,186 @@
-import { connect } from "http2";
-import { db } from "~/lib/db";
+
+import { db } from "@/server/db";
 export const jobField=[
+    {
+     Skills: [
+      "Risk Assessment",
+      "Underwriting",
+      "Claims Management"
+     ],
+     Industry: "Insurance",
+     Position: "Insurance Underwriter"
+    },
+    {
+     Skills: [
+      "Actuarial Science",
+      "Policy Analysis",
+      "Reinsurance"
+     ],
+     Industry: "Insurance",
+     Position: "Actuarial Analyst"
+    },
+    {
+     Skills: [
+      "Renewable Energy",
+      "Sustainability",
+      "Environmental Compliance"
+     ],
+     Industry: "Oil & Energy",
+     Position: "Renewable Energy Engineer"
+    },
+    {
+     Skills: [
+      "Oilfield Operations",
+      "Drilling Engineering",
+      "Reservoir Engineering"
+     ],
+     Industry: "Oil & Energy",
+     Position: "Petroleum Engineer"
+    },
+    {
+     Skills: [
+      "Network Infrastructure",
+      "Telecom Systems",
+      "Wireless Technologies"
+     ],
+     Industry: "Telecommunications",
+     Position: "Telecom Engineer"
+    },
+    {
+     Skills: [
+      "Network Security",
+      "Fiber Optic Communication",
+      "5G Technology"
+     ],
+     Industry: "Telecommunications",
+     Position: "Network Architect"
+    },
+    {
+     Skills: [
+      "Nutrition Planning",
+      "Fitness Training",
+      "Health Coaching"
+     ],
+     Industry: "Health, Wellness & Fitness",
+     Position: "Health Coach"
+    },
+    {
+     Skills: [
+      "Yoga Instruction",
+      "Meditation Guidance",
+      "Mindfulness Training"
+     ],
+     Industry: "Health, Wellness & Fitness",
+     Position: "Wellness Instructor"
+    },
+    {
+     Skills: [
+      "Legal Research",
+      "Case Preparation",
+      "Trial Advocacy"
+     ],
+     Industry: "Law Practice",
+     Position: "Litigation Lawyer"
+    },
+    {
+     Skills: [
+      "Corporate Law",
+      "Contracts Drafting",
+      "Regulatory Compliance"
+     ],
+     Industry: "Law Practice",
+     Position: "Corporate Attorney"
+    },
+    {
+     Skills: [
+      "Family Law",
+      "Mediation",
+      "Child Custody"
+     ],
+     Industry: "Law Practice",
+     Position: "Family Lawyer"
+    },
+    {
+     Skills: [
+      "Financial Analysis",
+      "Mergers & Acquisitions",
+      "Capital Markets"
+     ],
+     Industry: "Banking",
+     Position: "Investment Banker"
+    },
+    {
+     Skills: [
+      "Credit Analysis",
+      "Loan Processing",
+      "Financial Risk Assessment"
+     ],
+     Industry: "Banking",
+     Position: "Loan Officer"
+    },
+    {
+     Skills: [
+      "Cash Handling",
+      "Customer Service",
+      "Financial Transactions"
+     ],
+     Industry: "Banking",
+     Position: "Teller"
+    },
+    {
+     Skills: [
+      "Automotive Design",
+      "Vehicle Dynamics",
+      "Powertrain Engineering"
+     ],
+     Industry: "Automotive",
+     Position: "Automotive Engineer"
+    },
+    {
+     Skills: [
+      "Diagnostic Skills",
+      "Mechanical Knowledge",
+      "Electrical Skills"
+     ],
+     Industry: "Automotive",
+     Position: "Automotive Technician"
+    },
+    {
+     Skills: [
+      "Negotiation Skills",
+      "Product Knowledge",
+      "Customer Relations"
+     ],
+     Industry: "Automotive",
+     Position: "Sales Representative"
+    },
+    {
+     Skills: [
+      "Financial Reporting",
+      "Taxation",
+      "Audit Analytics"
+     ],
+     Industry: "Accounting",
+     Position: "Auditor"
+    },
+    {
+     Skills: [
+      "Account Reconciliation",
+      "Payroll Processing",
+      "General Ledger"
+     ],
+     Industry: "Accounting",
+     Position: "Bookkeeper"
+    },
+    {
+     Skills: [
+      "Financial Modeling",
+      "Risk Management",
+      "Data Analysis"
+     ],
+     Industry: "Accounting",
+     Position: "Financial Analyst"
+    },
     {
      Skills: [
       "Media Planning",
@@ -777,13 +957,7 @@ export const jobField=[
       "Oracle",
       "Core Java",
       "Business process",
-      "Outsourcing",
-      "Operations",
-      "spring integration",
-      "J2Ee",
-      "Spring framework",
-      "JEE",
-      "Manager Technology"
+      "Outsourcing"
      ],
      Industry: "Computer Software",
      Position: "Software Developer"
@@ -1601,11 +1775,6 @@ export const jobField=[
       "Fortigate",
       " Networking",
       " Routing",
-      " Hyper - V",
-      " Dlp",
-      " Sophos",
-      " Windows",
-      " Virtualization",
       " Switching",
       " Firewall"
      ],
@@ -1615,8 +1784,7 @@ export const jobField=[
     {
      Skills: [
       "Java",
-      " Spring Boot",
-      " Web Services",
+      "Web Services",
       " Microservices"
      ],
      Industry: "Computer Software",
@@ -1627,12 +1795,9 @@ export const jobField=[
       "SQL",
       " Android",
       " jQuery",
-      " UML",
       " Coding",
       " Graphics",
       " JSON",
-      " Test cases",
-      " System testing",
       " SQLite"
      ],
      Industry: "Computer Software",
@@ -2191,50 +2356,154 @@ export const jobField=[
      Position: "Web Designer"
     }
    ]
+    
 
 export async function fieldSeed() {
     for (const { Industry, Skills, Position } of jobField) {
-        const field = await db.jobIndustry.findFirst({
-                      where: { 
-                        name: Industry
-                    }
-                    });
-
-        const jobz = await db.position.findFirst({
-                        where: { 
-                        name: Position
-                    }
-                    });
-        if (field && jobz) {
-            const skills = Skills.forEach(async (skyll) => {
-                await db.skill.create({
+    
+        Skills.forEach(async (skill) => {
+            await db.skill.create({
                 data: {
-                  name: skyll,
-                  industryId: field.id,
-                  jobId: jobz.id
-                  }
-                });
-            });}}}
-           
-//         const field = await db.jobField.findFirst({
-//           where: { 
-//             name: Field 
-//         }
-//         });
-//         if (field) {
-//           await db.jobIndustry.create({
-//             data: {
-//               name: Industry,
-//               fieldId: field.id,
-//               skill: {
-//                 create: {
-//                   name: Skill_Category
-//                 }
-//               }
-//             }
-//           }
-//           );
-//         }
-//       }
+                    name: skill,
+                    positions: {
+                        create: [
+                        {
+                            position: {
+                                create: {
+                                    name: Position
+                                }
+                            }
+                        }
+                    ]
+                    }
+                }
+            }); 
+        });
 
+    }
+}
+export async function fieldSed() {
+
+    for (const { Industry, Skills, Position } of jobField) {
+        // let skyll={ Skills.map(skl => ({skl }))}
+        const position = await db.position.create({
+            
+                data: {
+                    name: Position,
+                    industries: {
+                        create: [
+                            { 
+                            industry: {
+                                create: {
+                                    name: Industry
+                                },
+                            },
+                        },
+                    ],
+                },
+
+            }});
+
+        Skills.forEach(async (skill) => {
+            await db.skill.create({
+                data: {
+                    name: skill,
+                    positions: {
+                        create: [
+                        {
+                            position: {
+                                connect: {
+                                    id: position.id
+                                }
+                            }
+                        }
+                    ]
+                    }
+                }
+            }); 
+        });
+    }}
+
+                                
+//                         ]
+//                         },
+//                     skills: {
+//                         create: [
+//                         {
+//                             skill: {
+//                                 create: [{
+//                                     {Skills.forEach(async (ski) => (name:ski))} 
+//                                 }]
+//                             }
+//                         }
+//                     ]
+//                     }
+//                 }
+//             }); 
+//         });
+
+//     }
 // }
+         
+                        
+                        
+// //                     },
+// //                     skills: {
+// //                         create: [{ name: skill }]
+// //                     }
+// //                 }
+//             }); 
+//         const position = await db.position.create({
+//             data: {
+//                 name: Position,
+//                 industries: {
+//                     create: [
+//                         { name: Industry },
+//                     ]
+//                     }
+//                 },
+//                 skills: {
+//                     create: Skills.map(skill => ({ name: skill }))
+//                 }
+//             }
+//         });
+
+    
+//         // const jobz = await db.position.findFirst({
+//         //                 where: { 
+//         //                 name: Position
+//         //             }
+//         //             });
+//         // if (field && jobz) {
+//         //     const skills = Skills.forEach(async (skyll) => {
+//         //         await db.skill.create({
+//         //         data: {
+//         //           name: skyll,
+//         //           industryId: field.id,
+//         //           jobId: jobz.id
+//         //           }
+//         //         });
+//         //     });}}}
+           
+// //         const field = await db.jobField.findFirst({
+// //           where: { 
+// //             name: Field 
+// //         }
+// //         });
+// //         if (field) {
+// //           await db.jobIndustry.create({
+// //             data: {
+// //               name: Industry,
+// //               fieldId: field.id,
+// //               skill: {
+// //                 create: {
+// //                   name: Skill_Category
+// //                 }
+// //               }
+// //             }
+// //           }
+// //           );
+// //         }
+// //       }
+
+// // }

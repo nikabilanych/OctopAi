@@ -2359,152 +2359,59 @@ export const jobField=[
     
 
 export async function fieldSeed() {
-    for (const { Industry, Skills, Position } of jobField) {
-    
-        Skills.forEach(async (skill) => {
-            await db.skill.create({
-                data: {
-                    name: skill,
-                    positions: {
-                        create: [
-                        {
-                            position: {
-                                create: {
-                                    name: Position
-                                }
-                            }
-                        }
-                    ]
-                    }
-                }
-            }); 
+    for (const { Skills, Industry, Position } of jobField) {
+        // Find or create Industry
+        const industryRecord = await db.industry.upsert({
+            where: { name: Industry },
+            update: {},
+            create: { name: Industry }
         });
 
+        // Find or create Position
+        const positionRecord = await db.position.upsert({
+            where: { name: Position },
+            update: {},
+            create: { name: Position }
+        });
+
+        // Link Position and Industry
+        await db.positionOnIndustry.upsert({
+            where: {
+                industryId_positionId: {
+                    industryId: industryRecord.id,
+                    positionId: positionRecord.id
+                }
+            },
+            update: {},
+            create: {
+                industryId: industryRecord.id,
+                positionId: positionRecord.id
+            }
+        });
+
+        // Process each Skill
+        for (const skill of Skills) {
+            // Find or create Skill
+            const skillRecord = await db.skill.upsert({
+                where: { name: skill },
+                update: {},
+                create: { name: skill }
+            });
+
+            // Link Skill and Position
+            await db.positionOnSkill.upsert({
+                where: {
+                    positionId_skillId: {
+                        positionId: positionRecord.id,
+                        skillId: skillRecord.id
+                    }
+                },
+                update: {},
+                create: {
+                    positionId: positionRecord.id,
+                    skillId: skillRecord.id
+                }
+            });
+        }
     }
 }
-export async function fieldSed() {
-
-    for (const { Industry, Skills, Position } of jobField) {
-        // let skyll={ Skills.map(skl => ({skl }))}
-
-        const skills_db = Skills.forEach(async (skill) => {
-            await db.skill.create({
-                data: {
-                    name: skill,
-                    positions: {
-                        create: [
-                        {
-                            position: {
-                                connect: {
-                                    id: position.id
-                                }
-                            }
-                        }
-                    ]
-                    }
-                }
-            }); 
-        });
-
-        const position = await db.position.create({
-            data: {
-                name: Position,
-                industries: {
-                        create: [
-                            { 
-                            industry: {
-                                create: {
-                                    name: Industry
-                                },
-                            },
-                        },
-                    ],
-                },
-                skills: skills_db 
-            }});
-
-            }}
-
-                                
-//                         ]
-//                         },
-//                     skills: {
-//                         create: [
-//                         {
-//                             skill: {
-//                                 create: [{
-//                                     {Skills.forEach(async (ski) => (name:ski))} 
-//                                 }]
-//                             }
-//                         }
-//                     ]
-//                     }
-//                 }
-//             }); 
-//         });
-
-//     }
-// }
-         
-                        
-                        
-// //                     },
-// //                     skills: {
-// //                         create: [{ name: skill }]
-// //                     }
-// //                 }
-//             }); 
-//         const position = await db.position.create({
-//             data: {
-//                 name: Position,
-//                 industries: {
-//                     create: [
-//                         { name: Industry },
-//                     ]
-//                     }
-//                 },
-//                 skills: {
-//                     create: Skills.map(skill => ({ name: skill }))
-//                 }
-//             }
-//         });
-
-    
-//         // const jobz = await db.position.findFirst({
-//         //                 where: { 
-//         //                 name: Position
-//         //             }
-//         //             });
-//         // if (field && jobz) {
-//         //     const skills = Skills.forEach(async (skyll) => {
-//         //         await db.skill.create({
-//         //         data: {
-//         //           name: skyll,
-//         //           industryId: field.id,
-//         //           jobId: jobz.id
-//         //           }
-//         //         });
-//         //     });}}}
-           
-// //         const field = await db.jobField.findFirst({
-// //           where: { 
-// //             name: Field 
-// //         }
-// //         });
-// //         if (field) {
-// //           await db.jobIndustry.create({
-// //             data: {
-// //               name: Industry,
-// //               fieldId: field.id,
-// //               skill: {
-// //                 create: {
-// //                   name: Skill_Category
-// //                 }
-// //               }
-// //             }
-// //           }
-// //           );
-// //         }
-// //       }
-
-// // }

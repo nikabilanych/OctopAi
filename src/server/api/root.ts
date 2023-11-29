@@ -1,4 +1,4 @@
-import { workExperienceRouter } from "@/server/api/routers/workexperience";
+import { workExperienceRouter } from "@/server/api/routers/initializing";
 import { createTRPCRouter } from "@/server/api/trpc";
 
 /**

@@ -48,7 +48,9 @@ model User {
     image          String?
     accounts       Account[]
     sessions       Session[]
-    WorkExperience UserExperience[]
+    userExperience UserExperience[]
+    matches        Match[]
+    songs          Songs[]
 }
 
 model VerificationToken {
@@ -101,3 +103,24 @@ model Skill {
     @@index([jobId])
 }
 
+model Match {
+    id     String @id @default(cuid())
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    jobs   String
+    
+    industries String
+
+    @@index([userId])
+}
+
+model Songs {
+    id     String @id @default(cuid())
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    name        String
+    url         String
+    description String
+    @@index([userId])
+}

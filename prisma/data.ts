@@ -2386,25 +2386,8 @@ export async function fieldSed() {
 
     for (const { Industry, Skills, Position } of jobField) {
         // let skyll={ Skills.map(skl => ({skl }))}
-        const position = await db.position.create({
-            
-                data: {
-                    name: Position,
-                    industries: {
-                        create: [
-                            { 
-                            industry: {
-                                create: {
-                                    name: Industry
-                                },
-                            },
-                        },
-                    ],
-                },
 
-            }});
-
-        Skills.forEach(async (skill) => {
+        const skills_db = Skills.forEach(async (skill) => {
             await db.skill.create({
                 data: {
                     name: skill,
@@ -2422,7 +2405,25 @@ export async function fieldSed() {
                 }
             }); 
         });
-    }}
+
+        const position = await db.position.create({
+            data: {
+                name: Position,
+                industries: {
+                        create: [
+                            { 
+                            industry: {
+                                create: {
+                                    name: Industry
+                                },
+                            },
+                        },
+                    ],
+                },
+                skills: skills_db 
+            }});
+
+            }}
 
                                 
 //                         ]

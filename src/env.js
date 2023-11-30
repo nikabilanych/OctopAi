@@ -13,7 +13,7 @@ export const env = createEnv({
       .refine(
         (str) =>
           !str.includes(
-            "mysql://ov1em0g24urvlaidvknu:pscale_pw_wvytpz15OauqnP4JDxTuTIurnIZHTHH4dAaaNVEPQIg@eu-central.connect.psdb.cloud/jobifai?sslaccept=strict",
+            'mysql://flcuztg7ntsaos65iymu:pscale_pw_eDmUu9VWZklmdt4gUYFEczQaBKAgS816ShFYJh2VlFs@aws.connect.psdb.cloud/jobifai?sslaccept=strict',
           ),
         "You forgot to change the default URL",
       ),
@@ -61,7 +61,7 @@ export const env = createEnv({
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
    * useful for Docker builds.
    */
-  skipValidation: !!process.env.SKIP_ENV_VALIDATION,
+  skipValidation: !process.env.SKIP_ENV_VALIDATION,
   /**
    * Makes it so that empty strings are treated as undefined.
    * `SOME_VAR: z.string()` and `SOME_VAR=''` will throw an error.

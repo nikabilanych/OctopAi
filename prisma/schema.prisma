@@ -62,27 +62,27 @@ model VerificationToken {
 }
 
 model Industry {
-    id        Int                  @id @default(autoincrement())
-    name      String
+    id        String                  @id @default(cuid())
+    name      String @unique
     positions PositionOnIndustry[]
 }
 
 model Position {
-    id         Int                  @id @default(autoincrement())
-    name       String 
+    id         String                  @id @default(cuid())
+    name       String @unique
     industries PositionOnIndustry[]
     skills     PositionOnSkill[]
 }
 
 model Skill {
-    id        Int               @id @default(autoincrement())
-    name      String
+    id        String               @id @default(cuid())
+    name      String @unique 
     positions PositionOnSkill[]
 }
 
 model PositionOnIndustry {
-    industryId Int
-    positionId Int
+    industryId String
+    positionId String
     industry   Industry @relation(fields: [industryId], references: [id])
     position   Position @relation(fields: [positionId], references: [id])
 
@@ -92,9 +92,9 @@ model PositionOnIndustry {
 }
 
 model PositionOnSkill {
-    positionId Int
+    positionId String
     position   Position @relation(fields: [positionId], references: [id])
-    skillId    Int
+    skillId    String
     skill      Skill    @relation(fields: [skillId], references: [id])
 
     @@id([positionId, skillId])

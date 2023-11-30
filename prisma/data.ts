@@ -919,12 +919,7 @@ export const jobField=[
     },
     {
      Skills: [
-      "Product management",
-      " Business process",
-      " Linkedin",
-      " Automation",
-      " CV",
-      " Email",
+
       " GIT",
       " Technical",
       " SDLC",
@@ -2282,9 +2277,7 @@ export const jobField=[
       " SQL",
       " XML",
       " design",
-      " PHP",
-      " ios development",
-      " PL"
+
      ],
      Industry: "Computer Software",
      Position: "Software Developer"
@@ -2356,154 +2349,69 @@ export const jobField=[
      Position: "Web Designer"
     }
    ]
-    
+  
+   export async function fieldSeed() {
+    for (let i=0;i<jobField.length;i++) {
+        let Position=jobField[i].Position;
+        let Skills=jobField[i].Skills;
+        let Industry=jobField[i].Industry;
+        let positions=jobField[i].positions;
 
-export async function fieldSeed() {
-    for (const { Industry, Skills, Position } of jobField) {
-    
-        Skills.forEach(async (skill) => {
-            await db.skill.create({
-                data: {
-                    name: skill,
-                    positions: {
-                        create: [
-                        {
-                            position: {
-                                create: {
-                                    name: Position
-                                }
-                            }
-                        }
-                    ]
-                    }
-                }
-            }); 
+
+        await Promise.all(async => db.position.create({
+            data: { name: Position,
+            skills: { create: position.skills?.map(name => ({ name })) },
+            }
+                
         });
 
+        // Find or create Position
+        const positionRecord = await db.position.create({
+            data: { name: Position,
+             }
+        });
+        await db.position.connectOrCreate({
+            where: {name:}
+            }
+        });
+
+        // Link Position and Industry
+        await db.positionOnIndustry.upsert({
+            where: {
+                industryId_positionId: {
+                    industryId: industryRecord.id,
+                    positionId: positionRecord.id
+                }
+            },
+            update: {},
+            create: {
+                industryId: industryRecord.id,
+                positionId: positionRecord.id
+            }
+        });
+
+        // Process each Skill
+        Skills.map(async (skll) => {
+                const skillRecord = await db.skill.upsert({
+                where: { name: skll },
+                update: {},
+                create: { name: skll }
+            });
+
+            // Link Skill and Position
+            await db.positionOnSkill.upsert({
+                where: {
+                    positionId_skillId: {
+                        positionId: positionRecord.id,
+                        skillId: skillRecord.id
+                    }
+                },
+                update: {},
+                create: {
+                    positionId: positionRecord.id,
+                    skillId: skillRecord.id
+                }
+            });
+        }
     }
 }
-export async function fieldSed() {
-
-    for (const { Industry, Skills, Position } of jobField) {
-        // let skyll={ Skills.map(skl => ({skl }))}
-        const position = await db.position.create({
-            
-                data: {
-                    name: Position,
-                    industries: {
-                        create: [
-                            { 
-                            industry: {
-                                create: {
-                                    name: Industry
-                                },
-                            },
-                        },
-                    ],
-                },
-
-            }});
-
-        Skills.forEach(async (skill) => {
-            await db.skill.create({
-                data: {
-                    name: skill,
-                    positions: {
-                        create: [
-                        {
-                            position: {
-                                connect: {
-                                    id: position.id
-                                }
-                            }
-                        }
-                    ]
-                    }
-                }
-            }); 
-        });
-    }}
-
-                                
-//                         ]
-//                         },
-//                     skills: {
-//                         create: [
-//                         {
-//                             skill: {
-//                                 create: [{
-//                                     {Skills.forEach(async (ski) => (name:ski))} 
-//                                 }]
-//                             }
-//                         }
-//                     ]
-//                     }
-//                 }
-//             }); 
-//         });
-
-//     }
-// }
-         
-                        
-                        
-// //                     },
-// //                     skills: {
-// //                         create: [{ name: skill }]
-// //                     }
-// //                 }
-//             }); 
-//         const position = await db.position.create({
-//             data: {
-//                 name: Position,
-//                 industries: {
-//                     create: [
-//                         { name: Industry },
-//                     ]
-//                     }
-//                 },
-//                 skills: {
-//                     create: Skills.map(skill => ({ name: skill }))
-//                 }
-//             }
-//         });
-
-    
-//         // const jobz = await db.position.findFirst({
-//         //                 where: { 
-//         //                 name: Position
-//         //             }
-//         //             });
-//         // if (field && jobz) {
-//         //     const skills = Skills.forEach(async (skyll) => {
-//         //         await db.skill.create({
-//         //         data: {
-//         //           name: skyll,
-//         //           industryId: field.id,
-//         //           jobId: jobz.id
-//         //           }
-//         //         });
-//         //     });}}}
-           
-// //         const field = await db.jobField.findFirst({
-// //           where: { 
-// //             name: Field 
-// //         }
-// //         });
-// //         if (field) {
-// //           await db.jobIndustry.create({
-// //             data: {
-// //               name: Industry,
-// //               fieldId: field.id,
-// //               skill: {
-// //                 create: {
-// //                   name: Skill_Category
-// //                 }
-// //               }
-// //             }
-// //           }
-// //           );
-// //         }
-// //       }
-
-// // }

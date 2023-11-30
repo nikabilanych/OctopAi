@@ -1,5 +1,5 @@
 import { db } from "@/server/db";
-import { fieldSed } from "./data";
+import { fieldSeed } from "./data";
 
 
 async function main() {
@@ -7,7 +7,8 @@ async function main() {
   //    await instrumentTypesSeed();
   //    await instrumentsSeed();
   //     await currenciesSeed();
-      await fieldSed();
+    //   await fieldSed();
+      await fieldSeed();
   }
   
   main()

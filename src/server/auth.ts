@@ -6,7 +6,7 @@ import {
 } from "next-auth";
 import GOOGLE_PROVIDER from "next-auth/providers/discord";
 
-import { env } from "process";
+import { env } from "./../env.js";
 import { db } from "./db";  
 
 /**

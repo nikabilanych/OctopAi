@@ -6,39 +6,30 @@ import {
 } from "../trpc";
 
 
-// create - user experience user id - ctx userid
-// fieldsofinterest - z.array(z.string())
-// fieldsofinterest - z.array(z.string())
-// fieldsofinterest - z.array(z.string())
-
-// match output
-// take industries (not optional!) -> db.jobindustry.findMany-> query -> name (find positions tied to that name)
-// take skills (not optional!) -> db.jobskill
-
-export const workExperienceRouter = createTRPCRouter({
-  helloInit:protectedProcedure.query(({ ctx }) => {
-    return ctx.db.user.findFirst({
-      where: { id: ctx.session.user.id },
-    });
-  }),
-  //const say hi=api.initializing.helloInit.query()
-  //hi.name
+export const userExperience = createTRPCRouter({
+  hello:protectedProcedure
+  .input(z.object({
+    name: z.string(),
+  }))
+  .query(({ ctx,input }) => {
+  return {greeting:`Hi there, ${input.name}!`
+  }}),
 
   setUp: protectedProcedure
     .input(z.object({
-      fieldsInterest: z.string(),
-      positionsInterest: z.string(),
-      userSkill: z.string(),
+      industries,
+      userSkill,
+      positions,
       }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation( async ({ ctx, input }) => {
       const { id } = ctx.session.user;
-      const { fieldsInterest, positionsInterest, userSkill } = input;
+      const { industries, userSkills, positions } = input;
 
       await ctx.db.userExperience.create({
         data: {
-          fieldsInterest,
-          positionsInterest,
+          industries,
           userSkill,
+          positions,
           userId: id,
         },
       });

@@ -2351,66 +2351,54 @@ export const jobField=[
    ]
   
    export async function fieldSeed() {
-    for (let i=0;i<jobField.length;i++) {
-        let Position=jobField[i].Position;
-        let Skills=jobField[i].Skills;
-        let Industry=jobField[i].Industry;
-        let positions=jobField[i].positions;
-
-
-        await Promise.all(async => db.position.create({
-            data: { name: Position,
-            skills: { create: position.skills?.map(name => ({ name })) },
-            }
-                
-        });
-
-        // Find or create Position
-        const positionRecord = await db.position.create({
-            data: { name: Position,
-             }
-        });
-        await db.position.connectOrCreate({
-            where: {name:}
-            }
-        });
-
-        // Link Position and Industry
-        await db.positionOnIndustry.upsert({
+    for (const { Skills, Industry, Position } of jobField) {
+        // Upsert the Industry
+        const industry = await db.industry.upsert({
             where: {
-                industryId_positionId: {
-                    industryId: industryRecord.id,
-                    positionId: positionRecord.id
-                }
+                name: Industry,
             },
-            update: {},
+            update: { positions: { connect: { name: Position } } },
             create: {
-                industryId: industryRecord.id,
-                positionId: positionRecord.id
-            }
+                name: Industry,
+                positions: {
+                    create: {
+                        name: Position,
+                    },
+                },
+            },
         });
 
-        // Process each Skill
-        Skills.map(async (skll) => {
-                const skillRecord = await db.skill.upsert({
-                where: { name: skll },
-                update: {},
-                create: { name: skll }
-            });
-
-            // Link Skill and Position
-            await db.positionOnSkill.upsert({
-                where: {
-                    positionId_skillId: {
-                        positionId: positionRecord.id,
-                        skillId: skillRecord.id
-                    }
+        // Create or find the Position within the Industry
+        const position = await db.position.upsert({
+            where: {
+                name: Position,
+            },
+            update: { industries: { connect: { id: industry.id } } },
+            create: {
+                name: Position,
+                industries: {
+                    connect: {
+                        id: industry.id,
+                    },
                 },
-                update: {},
+            },
+        });
+
+        // Create or find Skills and associate them with the Position
+        for (const skill of Skills) {
+            await db.skill.upsert({
+                where: {
+                    name: skill,
+                },
+                update: { positions: { connect: { id: position.id } } },
                 create: {
-                    positionId: positionRecord.id,
-                    skillId: skillRecord.id
-                }
+                    name: skill,
+                    positions: {
+                        connect: {
+                            id: position.id,
+                        },
+                    },
+                },
             });
         }
     }

@@ -62,44 +62,29 @@ model VerificationToken {
 }
 
 model Industry {
-    id        String                  @id @default(cuid())
+
+    id        Int                  @id @default(autoincrement())
     name      String @unique
-    positions PositionOnIndustry[]
+    positionId Int 
+    positions Position @relation(fields: [positionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+    @@index([positionId])
 }
 
 model Position {
-    id         String                  @id @default(cuid())
+    id         Int                  @id @default(autoincrement())
     name       String @unique
-    industries PositionOnIndustry[]
-    skills     PositionOnSkill[]
+    industries Industry[]
+    skills     Skill[]
 }
 
 model Skill {
-    id        String               @id @default(cuid())
-    name      String @unique 
-    positions PositionOnSkill[]
-}
+    id        Int               @id @default(autoincrement())
+    name      String @unique
+    positionId Int 
+    positions Position @relation(fields: [positionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-model PositionOnIndustry {
-    industryId String
-    positionId String
-    industry   Industry @relation(fields: [industryId], references: [id])
-    position   Position @relation(fields: [positionId], references: [id])
-
-    @@id([industryId, positionId])
-    @@index([industryId])
     @@index([positionId])
-}
-
-model PositionOnSkill {
-    positionId String
-    position   Position @relation(fields: [positionId], references: [id])
-    skillId    String
-    skill      Skill    @relation(fields: [skillId], references: [id])
-
-    @@id([positionId, skillId])
-    @@index([positionId])
-    @@index([skillId])
 }
 
 model UserExperience {

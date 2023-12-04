@@ -19,7 +19,7 @@ module.exports = {
       colors: {
         main: "#000041",
         whyte:"#f2f4f1",
-        pyrply:"#6d0edd",
+        pyrply:"#9B25E6",
         pyrply2:"#4c12d3",
         firstdark: "#101960",
         seconddark: "#232F79",

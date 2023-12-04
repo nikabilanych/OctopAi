@@ -41,16 +41,14 @@ model Session {
 }
 
 model User {
-    id             String           @id @default(cuid())
-    name           String?
-    email          String?          @unique
-    emailVerified  DateTime?
-    image          String?
-    accounts       Account[]
-    sessions       Session[]
-    userExperience UserExperience[]
-    matches        Match[]
-    playlist       Playlist[]
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+    profile       Profile[]
 }
 
 model VerificationToken {
@@ -61,69 +59,49 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Industry {
-
-    id        Int                  @id @default(autoincrement())
-    name      String @unique
-    positionId Int 
-    positions Position @relation(fields: [positionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-    @@index([positionId])
+enum UserRole {
+    FREELANCER
+    CLIENT
 }
 
-model Position {
-    id         Int                  @id @default(autoincrement())
-    name       String @unique
-    industries Industry[]
-    skills     Skill[]
-}
-
-model Skill {
-    id        Int               @id @default(autoincrement())
-    name      String @unique
-    positionId Int 
-    positions Position @relation(fields: [positionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-    @@index([positionId])
-}
-
-model UserExperience {
-    id         Int     @id @default(autoincrement())
-    user       User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+model Profile {
+    id         String   @id @default(cuid())
     userId     String
-    industries String
-    positions  String?
-    userSkill  String
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    role       UserRole @default(FREELANCER)
+    imageUrl   String?
+    name       String?
+    skills     String?
+    bio        String?
+    location   String?
+    url        String?
+    website    String?
+    phone      String?
+    created_at DateTime @default(now())
+    posts      Post[]
 
     @@index([userId])
 }
 
-model Match {
-    id        String @id @default(cuid())
-    userId    String
-    user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    positions String
-
-    @@index([userId])
-}
-
-model Songs {
-    id          Int      @id @default(autoincrement())
-    playlistId  Int
-    playlist    Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+model Post {
+    id          String   @id @default(cuid())
+    postedby    String
+    profile     Profile  @relation(fields: [postedby], references: [id], onDelete: Cascade)
     title       String
-    url         String
-    description String?
+    categoryId  String
+    category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    description String
+    location    String
+    salaryRange String
+    created_at  DateTime @default(now())
+    updated_at  DateTime @default(now())
 
-    @@index([playlistId])
+    @@index([postedby])
+    @@index([categoryId])
 }
 
-model Playlist {
-    id     Int     @id @default(autoincrement())
-    userId String
-    user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    title  String
-    songs  Songs[]
-
-    @@index([userId])
+model Category {
+    id    String @id @default(cuid())
+    name  String
+    posts Post[]
 }

@@ -1,4 +1,4 @@
-import { workExperienceRouter } from "@/server/api/routers/initializing";
+import { ProfileRouter } from "@/server/api/routers/profile";
 import { createTRPCRouter } from "@/server/api/trpc";
 
 /**
@@ -7,7 +7,7 @@ import { createTRPCRouter } from "@/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  work_experience: workExperienceRouter,
+  profiler: ProfileRouter
 
 });
 

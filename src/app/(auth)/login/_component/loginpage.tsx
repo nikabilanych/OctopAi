@@ -16,7 +16,14 @@ export function LoginButton() {
             callbackUrl: "/site"})
         }   
 catch (e) {
-    setLoading (value: false);
+    setLoading (false);
 } finally {
-setLoading (value: false);
+setLoading (false)
+}
+    }
+    return(
+        <>
+        <div>
+            hi</div></>
+    )
 }

@@ -17,6 +17,18 @@ module.exports = {
     },
     extend: {
       colors: {
+        main: "#000041",
+        whyte:"#f2f4f1",
+        pyrply:"#6d0edd",
+        pyrply2:"#4c12d3",
+        firstdark: "#101960",
+        seconddark: "#232F79",
+        thirddark: "#334392",
+        fourthdark:"#475AA7",
+        second: "#23BDD9",
+        third: "#5AE2F8",
+        inner: "#f9f9f9",
+        bl: "##0d0d53",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

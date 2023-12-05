@@ -4,6 +4,7 @@ import { Familjen_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { TRPCReactProvider } from "@/trpc/react";
+import Navbar from "@/components/navbar";
 
 const grotesk = Familjen_Grotesk({
   subsets: ["latin"],

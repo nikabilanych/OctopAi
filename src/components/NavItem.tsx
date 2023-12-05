@@ -14,23 +14,24 @@ interface NavItemProps {
 }
 
 const NavItem = ({ category, isOpen, handleOpen, isAnyOpen }: NavItemProps) => {
-  return;
-  <div className="flex">
-    <div className="relative flex items-center">
-      <Button
-        variant={isOpen ? "secondary" : "ghost"}
-        onClick={handleOpen}
-        className="gap-2 "
-      >
-        {category.label}
-        <ChevronDown
-          className={cn("h-4 w-4 text-muted-foreground transition-all", {
-            "-rotate-100": isOpen,
-          })}
-        />
-      </Button>
+  return (
+    <div className="flex">
+      <div className="relative flex items-center">
+        <Button
+          variant={isOpen ? "secondary" : "ghost"}
+          onClick={handleOpen}
+          className="gap-2 "
+        >
+          {category.label}
+          <ChevronDown
+            className={cn("h-4 w-4 text-muted-foreground transition-all", {
+              "-rotate-100": isOpen,
+            })}
+          />
+        </Button>
+      </div>
     </div>
-  </div>;
+  );
 };
 
 export default NavItem;

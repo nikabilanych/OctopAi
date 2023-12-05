@@ -1,45 +1,35 @@
 "use client";
-
+import NavItem from "./NavItem";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { PRODUCT_CATEGORIES } from "@/config";
-const NavItem = () => {
-    const [open, setOpen] = useState<null|number>(null);
-
-    return (
+const NavItems = () => {
+  const [activeIndex, setActiveIndex] = useState<null | number>(null);
+  const isAnyOpen = activeIndex !== null;
+  return (
     <>
-    <div className="flex gap-4 h-full">
-        {PRODUCT_CATEGORIES.map((category,i) => {
-            const handleOpen = () => {
-                if (open===i){
-                    setOpen(null);
-                }
-                else {
-                    setOpen(i);
-                }
-            };
-        return (
-                <div
-                    key={category.id}
-                    className="flex items-center justify-center h-full cursor-pointer"
-                >
-                    <div
-                        className="flex items-center justify-center h-full cursor-pointer"
-                        onClick={handleOpen}
-                    >
-                        {category.label}
-                    </div>
-                </div>
-            );
-        }
-        <div
-            key={category.id}
-            className="flex items-center justify-center h-full cursor-pointer"
-        >}
-    </div>
-</>
+      <div className="flex h-full gap-4">
+        {PRODUCT_CATEGORIES.map((category, i) => {
+          const handleOpen = () => {
+            if (activeIndex === i) {
+              setActiveIndex(null);
+            } else {
+              setActiveIndex(i);
+            }
+          };
+          const isOpen = i === activeIndex;
+          return (
+            <NavItem
+              key={category.value}
+              category={category}
+              isOpen={isOpen}
+              handleOpen={handleOpen}
+              isAnyOpen={isAnyOpen}
+            />
+          );
+        })}
+      </div>
+    </>
   );
 };
-export default NavItem;
-
-
+export default NavItems;

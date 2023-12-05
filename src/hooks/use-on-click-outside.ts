@@ -1,4 +1,5 @@
 import { RefObject, useEffect } from "react";
+//if element not in the target, handler is called HOOK 
 
 type Event = MouseEvent | TouchEvent;
 

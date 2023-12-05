@@ -40,7 +40,7 @@ export default async function Home() {
             <span className="text-pyrply">all in one place</span>
           </h1>
           <p className="text-whyte m-6 mx-auto max-w-prose text-center text-sm md:max-w-2xl md:text-xl">
-            Explore our vibrant ecosystem that connects creators, artists and
+            Welcome to DigitalOctopus - the vibrant ecosystem connecting creators, artists and
             digital enthusiasts. Whether you're a designer or a buyer.
           </p>
           <div className="mt-6 flex gap-4 md:flex-col">

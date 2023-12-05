@@ -11,8 +11,8 @@ const grotesk = Familjen_Grotesk({
 });
 
 export const metadata = {
-  title: "Najmi freelanCZera",
-  description: "Najmi freelanCZera",
+  title: "DigitalOctopus",
+  description: "DigitalOctopus - marketplace for creators and artists",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 

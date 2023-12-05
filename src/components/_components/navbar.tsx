@@ -84,23 +84,3 @@ export const Navbar = () => {
   );
 };
 
-const ListItem = ({
-  children,
-  NavLink,
-}: {
-  children: React.ReactNode;
-  NavLink?: string;
-}) => {
-  return (
-    <>
-      <li>
-        <a
-          href={NavLink}
-          className="text-body-color hover:text-dark dark:text-dark-6 flex py-2 text-base font-medium dark:hover:text-white lg:ml-12 lg:inline-flex"
-        >
-          {children}
-        </a>
-      </li>
-    </>
-  );
-};

@@ -2349,57 +2349,154 @@ export const jobField=[
      Position: "Web Designer"
     }
    ]
-  
-   export async function fieldSeed() {
-    for (const { Skills, Industry, Position } of jobField) {
-        // Upsert the Industry
-        const industry = await db.industry.upsert({
-            where: {
-                name: Industry,
-            },
-            update: { positions: { connect: { name: Position } } },
-            create: {
-                name: Industry,
-                positions: {
-                    create: {
-                        name: Position,
-                    },
-                },
-            },
-        });
+    
 
-        // Create or find the Position within the Industry
-        const position = await db.position.upsert({
-            where: {
-                name: Position,
-            },
-            update: { industries: { connect: { id: industry.id } } },
-            create: {
-                name: Position,
-                industries: {
-                    connect: {
-                        id: industry.id,
-                    },
-                },
-            },
-        });
-
-        // Create or find Skills and associate them with the Position
-        for (const skill of Skills) {
-            await db.skill.upsert({
-                where: {
-                    name: skill,
-                },
-                update: { positions: { connect: { id: position.id } } },
-                create: {
+export async function fieldSeed() {
+    for (const { Industry, Skills, Position } of jobField) {
+    
+        Skills.forEach(async (skill) => {
+            await db.skill.create({
+                data: {
                     name: skill,
                     positions: {
-                        connect: {
-                            id: position.id,
-                        },
-                    },
-                },
-            });
-        }
+                        create: [
+                        {
+                            position: {
+                                create: {
+                                    name: Position
+                                }
+                            }
+                        }
+                    ]
+                    }
+                }
+            }); 
+        });
+
     }
 }
+export async function fieldSed() {
+
+    for (const { Industry, Skills, Position } of jobField) {
+        // let skyll={ Skills.map(skl => ({skl }))}
+        const position = await db.position.create({
+            
+                data: {
+                    name: Position,
+                    industries: {
+                        create: [
+                            { 
+                            industry: {
+                                create: {
+                                    name: Industry
+                                },
+                            },
+                        },
+                    ],
+                },
+
+            }});
+
+        Skills.forEach(async (skill) => {
+            await db.skill.create({
+                data: {
+                    name: skill,
+                    positions: {
+                        create: [
+                        {
+                            position: {
+                                connect: {
+                                    id: position.id
+                                }
+                            }
+                        }
+                    ]
+                    }
+                }
+            }); 
+        });
+    }}
+
+                                
+//                         ]
+//                         },
+//                     skills: {
+//                         create: [
+//                         {
+//                             skill: {
+//                                 create: [{
+//                                     {Skills.forEach(async (ski) => (name:ski))} 
+//                                 }]
+//                             }
+//                         }
+//                     ]
+//                     }
+//                 }
+//             }); 
+//         });
+
+//     }
+// }
+         
+                        
+                        
+// //                     },
+// //                     skills: {
+// //                         create: [{ name: skill }]
+// //                     }
+// //                 }
+//             }); 
+//         const position = await db.position.create({
+//             data: {
+//                 name: Position,
+//                 industries: {
+//                     create: [
+//                         { name: Industry },
+//                     ]
+//                     }
+//                 },
+//                 skills: {
+//                     create: Skills.map(skill => ({ name: skill }))
+//                 }
+//             }
+//         });
+
+    
+//         // const jobz = await db.position.findFirst({
+//         //                 where: { 
+//         //                 name: Position
+//         //             }
+//         //             });
+//         // if (field && jobz) {
+//         //     const skills = Skills.forEach(async (skyll) => {
+//         //         await db.skill.create({
+//         //         data: {
+//         //           name: skyll,
+//         //           industryId: field.id,
+//         //           jobId: jobz.id
+//         //           }
+//         //         });
+//         //     });}}}
+           
+// //         const field = await db.jobField.findFirst({
+// //           where: { 
+// //             name: Field 
+// //         }
+// //         });
+// //         if (field) {
+// //           await db.jobIndustry.create({
+// //             data: {
+// //               name: Industry,
+// //               fieldId: field.id,
+// //               skill: {
+// //                 create: {
+// //                   name: Skill_Category
+// //                 }
+// //               }
+// //             }
+// //           }
+// //           );
+// //         }
+// //       }
+
+// // }

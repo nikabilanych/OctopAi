@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Wrapper from "@/components/wrapper";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
@@ -34,25 +34,30 @@ export default async function Home() {
   return (
     <>
       <Wrapper>
-        <div className="flex max-w-3xl flex-col items-center justify-center gap-4 py-20">
-          <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl">
+        <div className="mx-auto flex max-w-3xl flex-col items-center justify-center py-20 text-center">
+          <h1 className="text-4xl font-bold tracking-tight text-black sm:text-6xl">
             High-quality digital assets{" "}
             <span className="text-pyrply">all in one place</span>
           </h1>
-          <p className="text-whyte m-6 mx-auto max-w-prose text-center text-sm md:max-w-2xl md:text-xl">
-            Welcome to DigitalOctopus - the vibrant ecosystem connecting creators, artists and
-            digital enthusiasts. Whether you're a designer or a buyer.
+          <p className="m-6 mx-auto max-w-prose text-center text-sm text-black md:max-w-2xl md:text-xl">
+            Welcome to DigitalOctopus - the vibrant ecosystem connecting
+            creators, artists and digital enthusiasts. Whether you're a designer
+            or a buyer.
           </p>
           <div className="mt-6 flex gap-4 md:flex-col">
-            <Link href="/products" className={buttonVariants()}>
-              Browse Trending
-            </Link>
+            <Button
+              asChild
+              variant="default"
+              className="bg-pyrply/90 hover:bg-pyrply/80"
+            >
+              <Link href="/products">Browse Trending</Link>
+            </Button>
             <Button variant="ghost">Our quality promise &rarr;</Button>
           </div>
         </div>
         {/* TODO: DISPLAY POST */}
       </Wrapper>
-      <section className="border-t border-gray-200 bg-gray-50">
+      <section className="border-t border-gray-200 bg-pyrply2/5">
         <Wrapper className="py-20">
           <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
             {items.map((item) => (
@@ -61,7 +66,7 @@ export default async function Home() {
                 className="text-center md:flex md:items-start md:text-left lg:block lg:text-center"
               >
                 <div className="flex justify-center md:flex-shrink-0">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 text-blue-900">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-pyrply2/10 text-pyrply">
                     {<item.Icon className="h-1/3 w-1/3" />}
                   </div>
                 </div>

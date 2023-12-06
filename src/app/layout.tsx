@@ -4,7 +4,7 @@ import { Familjen_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { cookies } from "next/headers";
 import { TRPCReactProvider } from "@/trpc/react";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/Navbar";
 
 const grotesk = Familjen_Grotesk({
   subsets: ["latin"],
@@ -23,9 +23,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
-      <body className={cn("anti relative h-full font-sans", grotesk.className)}>
+    <html lang="en">
+      <body
+        className={cn(
+          "relative h-full font-sans antialiased",
+          grotesk.className,
+        )}
+      >
         <main className="relative flex min-h-screen flex-col">
+          <Navbar />
           <TRPCReactProvider cookies={cookies().toString()}>
             {children}
           </TRPCReactProvider>

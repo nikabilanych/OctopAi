@@ -20,12 +20,12 @@ const NavItem = ({ category, isOpen, handleOpen, isAnyOpen }: NavItemProps) => {
         <Button
           variant={isOpen ? "secondary" : "ghost"}
           onClick={handleOpen}
-          className="gap-2 "
+          className="gap-1.5 "
         >
           {category.label}
           <ChevronDown
             className={cn("h-4 w-4 text-muted-foreground transition-all", {
-              "-rotate-100": isOpen,
+              "-rotate-180": isOpen,
             })}
           />
         </Button>
@@ -40,24 +40,36 @@ const NavItem = ({ category, isOpen, handleOpen, isAnyOpen }: NavItemProps) => {
           )}
         >
           <div
-            className="bg-firstdark absolute inset-0 top-1/2 shadow"
+            className="absolute inset-0 top-1/2 bg-white shadow"
             aria-hidden="true"
           />
-          <div className="bg-firstdark relative">
+          <div className="relative bg-white">
             <div className="mx-auto max-w-7xl px-8">
               <div className="grid grid-cols-4 gap-x-4 gap-y-10 py-16">
                 <div className="col-span-4 col-start-1 grid grid-cols-3 gap-x-8 gap-y-10 py-16">
-                  {category.featured.map((item)=> (
-                    <div key={item.name} className="group relative text-base sm:text-sm">
-
+                  {category.featured.map((item) => (
+                    <div
+                      key={item.name}
+                      className="group relative text-base sm:text-sm"
+                    >
                       <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-50 group-hover:opacity-80 ">
-                        <Image src={item.imageSrc} alt="product category img" fill className="object-cover object-center"/>
+                        <Image
+                          src={item.imageSrc}
+                          alt="product category img"
+                          fill
+                          className="object-cover object-center"
+                        />
                       </div>
-                      <Link href="{item.href}" className="mt-6 block font-medium text-pyrply">
+                      <Link
+                        href="{item.href}"
+                        className="text-pyrply mt-6 block font-medium"
+                      >
                         {item.name}
                       </Link>
-                      <p className="mt-1" aria-hidden="true">Shop now</p>
-                      </div>
+                      <p className="mt-1" aria-hidden="true">
+                        Shop now
+                      </p>
+                    </div>
                   ))}
                 </div>
               </div>

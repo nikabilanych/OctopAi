@@ -5,7 +5,6 @@ import { ShoppingBag } from "lucide-react";
 import CartItems from "./CartItems";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetFooter,
   SheetHeader,
@@ -13,17 +12,18 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { formatPrice } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
+
+import { Icons } from "./Icons";
 
 const Cart = () => {
   let itemCount = 0;
   return (
     <Sheet>
-      <SheetTrigger asChild className="group m-2 flex items-center p-2">
-        <ShoppingBag className="h-6 w-6 flex-shrink-0 text-white group-hover:text-white/60" />
-        <span className="text-white/ ml-2 text-sm font-medium group-hover:text-white/60"></span>
+      <SheetTrigger className="group m-2 flex items-center p-2">
+        <ShoppingBag className="h-6 w-6 flex-shrink-0 text-black group-hover:text-gray-100/60" />
+        <span className="ml-2 text-sm font-medium text-black group-hover:text-gray-100/60"></span>
       </SheetTrigger>
       <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
         <SheetHeader className="space-y-3 pr-6">
@@ -56,9 +56,12 @@ const Cart = () => {
               </div>
               <SheetFooter>
                 <SheetTrigger asChild>
-                  <Button asChild variant={"ghost"} className="w-full">
-                    <Link href={"/cart"}>Continue to Checkout</Link>
-                  </Button>
+                  <Link
+                    href={"/cart"}
+                    className={buttonVariants({ className: "w-full" })}
+                  >
+                    Continue to Checkout
+                  </Link>
                 </SheetTrigger>
               </SheetFooter>
             </div>
@@ -66,36 +69,26 @@ const Cart = () => {
         ) : (
           <div className="flex h-full flex-col items-center justify-center space-y-1">
             <div
-              className="relative mb-4 h-60 w-60 text-muted-foreground"
+              className="relative mb-4 h-[115px] w-[200px] text-muted-foreground"
               aria-hidden="true"
             >
-              <Image
-                src={"/octopai.png"}
-                alt="empty cart octopus"
-                fill
-                className="h-full w-full"
-              />
-              <div className="text-xl font-semibold">Your cart is empty</div>
-              <SheetTrigger asChild>
-                <Button
-                  asChild
-                  variant={"link"}
-                  className="w-full text-sm text-muted-foreground"
-                  size={"sm"}
-                >
-                  <Link href={"/products"}>Continue shopping</Link>
-                </Button>
-                <div></div>
-              </SheetTrigger>
+              <Icons.cecilian />
             </div>
+            <div className="text-xl font-semibold">Your cart is empty</div>
+            <SheetTrigger asChild>
+              <Link
+                href={"/products"}
+                className={buttonVariants({
+                  variant: "link",
+                  size: "sm",
+                  className: "w-full text-sm text-muted-foreground",
+                })}
+              >
+                Continue shopping
+              </Link>
+            </SheetTrigger>
           </div>
         )}
-
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );

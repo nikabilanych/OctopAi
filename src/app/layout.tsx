@@ -31,8 +31,8 @@ export default function RootLayout({
         )}
       >
         <main className="relative flex min-h-screen flex-col">
-          <Navbar />
           <TRPCReactProvider cookies={cookies().toString()}>
+          <Navbar />
             {children}
           </TRPCReactProvider>
         </main>

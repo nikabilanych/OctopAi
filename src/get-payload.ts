@@ -34,10 +34,10 @@ if (!cached.promise){
     })
 }
 try {
-    cached.cliet=await cached.promise
-} catch (e:unknown) {
-    console.error(e)
+    cached.cliet = await cached.promise
+} catch (err:unknown) {
+    cached.promise=null;
+    throw err
 }
-
-
+return cached.client
 }

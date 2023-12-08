@@ -20,7 +20,7 @@ const start = async () => {
         // SELFHOSTING
     nextApp.prepare().then(() => {
         app.listen(PORT, () => {
-            payload.logger.info(`> Payload - Ready on ${process.env.NEXT_PUBLIC_SERVER_URL}`);
+            // payload.logger.info(`> Payload - Ready on ${process.env.NEXT_PUBLIC_SERVER_URL}`);
 
         });
     })

@@ -18,7 +18,7 @@ const Navbar = () => {
               {/* TODO: MOBILE */}
               <div className="ml-4 flex lg:ml-0">
                 <Link href={"/"}>
-                  <Icons.logo className="h-10 w-10" />
+                  <Icons.logo className="h-10 w-10 hover:transform hover:scale-105 hover:contrast-75" />
                 </Link>
               </div>
               <div className="z-50 hidden lg:ml-8 lg:block lg:self-stretch">

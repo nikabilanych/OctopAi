@@ -17,6 +17,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        fave:"#780f9b",
         main: "#000041",
         whyte:"#f2f4f1",
         pyrply:"#9B25E6",

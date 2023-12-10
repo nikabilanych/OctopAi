@@ -2,13 +2,12 @@ import Link from "next/link";
 import Wrapper from "@/components/wrapper";
 import { Button } from "@/components/ui/button";
 
-import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { ArrowDownToLine, CheckCircle, Blocks, Gem, Leaf } from "lucide-react";
 
 export default async function Home() {
   // const hello = await api.post.hello.query({ text: "from tRPC" });
-  const session = await getServerAuthSession();
+  const session = null;
 
   const items = [
     {
@@ -35,10 +34,10 @@ export default async function Home() {
     <>
       <Wrapper>
         <div className="mx-auto flex max-w-3xl flex-col items-center justify-center py-20 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-black sm:text-6xl">
+          <div className="text-4xl font-bold tracking-tight text-black sm:text-6xl">
             High-quality digital assets{" "}
-            <span className="text-pyrply">all in one place</span>
-          </h1>
+            <div className="text-pyrply mt-2">all in one place</div>
+          </div>
           <p className="m-6 mx-auto max-w-prose text-center text-sm text-black md:max-w-2xl md:text-xl">
             Welcome to DigitalOctopus - the vibrant ecosystem connecting
             creators, artists and digital enthusiasts. Whether you're a designer
@@ -48,7 +47,8 @@ export default async function Home() {
             <Button
               asChild
               variant="default"
-              className="bg-pyrply/90 hover:bg-pyrply/80"
+              className=" hover:bg-pyrply/80"
+
             >
               <Link href="/products">Browse Trending</Link>
             </Button>

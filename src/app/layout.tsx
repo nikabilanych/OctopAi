@@ -3,7 +3,7 @@ import "@/app/globals.css";
 import { Familjen_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { cookies } from "next/headers";
-import { TRPCReactProvider } from "@/trpc/react";
+import Providers  from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 
 const grotesk = Familjen_Grotesk({
@@ -31,10 +31,12 @@ export default function RootLayout({
         )}
       >
         <main className="relative flex min-h-screen flex-col">
-          <TRPCReactProvider cookies={cookies().toString()}>
+          <Providers>
           <Navbar />
+          <div className="flex-1 flex-grow">
             {children}
-          </TRPCReactProvider>
+          </div>
+          </Providers>
         </main>
       </body>
     </html>

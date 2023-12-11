@@ -3,7 +3,9 @@
 //payload cms via https://payloadcms.com/docs/getting-started/installationxw
 import { getPayloadClient } from "./get-payload";
 import express from "express"
+import trpcExpress from "@trpc/server/adapters/express";
 import { nextApp, nextHandler } from "./next-utils";
+import { appRouter } from "./trpc";
 const app=express();
 const PORT = Number(process.env.PORT)||3000;
 const start = async () => {
@@ -15,7 +17,8 @@ const start = async () => {
             },
         }
     })
-    // -> option for self host, no need for vercel --
+    app.use('api/trpc',trpcExpress.createExpressMiddleware({router:appRouter}))
+    // -> option for self host, no need for vercel <-- //
     app.use((req,res) => nextHandler(req, res))
         // SELFHOSTING
     nextApp.prepare().then(() => {

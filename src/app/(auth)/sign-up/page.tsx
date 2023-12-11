@@ -19,13 +19,7 @@ import {
 } from "@/components/ui/form";
 
 import { useState, useEffect } from "react";
-
-const ZodFormSchema=z.object({
-  email:z.string().email({message:"Invalid email"}),
-  password:z.string().min(8,{message:"Password must be at least 8 characters"}),
-})
-
-type ZodForm=z.infer<typeof ZodFormSchema>
+import { ZodFormSchema, ZodForm } from "@/lib/validators/account-validator";
 
 const Page = () => {
   const { register, handleSubmit, formState: { errors }}= useForm<ZodForm>({
@@ -35,6 +29,9 @@ const Page = () => {
     password:""
   }
 });
+const onSubmit = ({email,password}:ZodForm)=>{
+  
+}
     return (
         <>
         <div className="container relative flex pt-20 flex-col items-center justify-center lg:px-0">
@@ -50,20 +47,20 @@ const Page = () => {
           </Link>
         </div >
         <div className="grid gap-6">
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-2">
             <div className="grid gap-1 py-2">
               <Label htmlFor='email' className="ml-2 mb-1">Email</Label>
-              <Input className={cn({"focus-visible:ring-fuchsia-500/50":true,})} placeholder="johndoe@me.com">
+              <Input {...register("email")}className={cn({"focus-visible:ring-fuchsia-500/50":errors.email,})} placeholder="johndoe@me.com">
               </Input>
             </div>          
 
             <div className="grid gap-1 py-2">
               <Label htmlFor='email' className="ml-2 mb-1">Password</Label>
-              <Input className={cn({"focus-visible:ring-fuchsia-500/50":true,})} placeholder="password">
+              <Input {...register("password")}className={cn({"focus-visible:ring-fuchsia-500/50":errors.password,})} placeholder="password">
               </Input>
             </div>          
-        <Button className="w-full">Create account</Button>
+        <Button type="submit" {...handleSubmit} className="w-full">Create account</Button>
           </div>          
          
   </form>
@@ -75,4 +72,4 @@ const Page = () => {
         </>
     );
   };
-export default Page
+export default Page 

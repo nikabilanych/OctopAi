@@ -7,30 +7,18 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 
+import { trpc } from "@/trpc/client";
 import { useState, useEffect } from "react";
 import { ZodFormSchema, ZodForm } from "@/lib/validators/account-validator";
 
 const Page = () => {
   const { register, handleSubmit, formState: { errors }}= useForm<ZodForm>({
-  resolver: zodResolver(ZodFormSchema),
-  defaultValues: {
-    email: "",
-    password:""
-  }
+  resolver: zodResolver(ZodFormSchema)
 });
+const { data } = trpc.anyApiRoute.useQuery()
+//send data to server
 const onSubmit = ({email,password}:ZodForm)=>{
-  
 }
     return (
         <>

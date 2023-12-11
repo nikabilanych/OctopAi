@@ -1,3 +1,4 @@
+"use client";
 import { Icons } from "@/components/Icons";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -5,20 +6,20 @@ import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm } from "react-hook-form"; //useForm from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { trpc } from "@/trpc/client";
-import { useState, useEffect } from "react";
-import { ZodFormSchema, ZodForm } from "@/lib/validators/account-validator";
+
+import { authCredentials, authCredentialsType } from "@/lib/validators/account-validator";
 
 const Page = () => {
-  const { register, handleSubmit, formState: { errors }}= useForm<ZodForm>({
-  resolver: zodResolver(ZodFormSchema)
+  const { register, handleSubmit, formState: { errors }}= useForm<authCredentialsType>({
+  resolver: zodResolver(authCredentials)
 });
-const { data } = trpc.anyApiRoute.useQuery()
+
 //send data to server
-const onSubmit = ({email,password}:ZodForm)=>{
+const onSubmit = ({email,password}:authCredentialsType)=>{
 }
     return (
         <>

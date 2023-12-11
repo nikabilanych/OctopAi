@@ -3,15 +3,22 @@
 //payload cms via https://payloadcms.com/docs/getting-started/installationxw
 import { getPayloadClient } from "./get-payload";
 import express from "express"
-import trpcExpress from "@trpc/server/adapters/express";
+import * as trpcExpress from "@trpc/server/adapters/express";
 import { nextApp, nextHandler } from "./next-utils";
 import { appRouter } from "./trpc";
-const app=express();
+
+const app = express();
+
 const PORT = Number(process.env.PORT)||3000;
-const createContext = ({req,res}:trpcExpress.CreateExpressContextOptions) => ({
+const createContext = ({
     req,
-    res
-})
+    res,
+  }: trpcExpress.CreateExpressContextOptions) => ({
+    req,
+    res,
+  })
+  
+
 const start = async () => {
     const payload = await getPayloadClient({
         initOptions: {
@@ -23,19 +30,21 @@ const start = async () => {
     })
     //request flow -> api/trpc request -> forwarded to api middleware trpcExpress.createExpressMiddleware -> need endpoint
     //this route is accessed thanks to slug []
-    app.use('api/trpc',trpcExpress.createExpressMiddleware({
-        router:appRouter,
-        createContext 
-    })),
+    app.use('/api/trpc', trpcExpress.createExpressMiddleware({
+        router: appRouter,
+        createContext, 
+    }))
     // -> option for self host, no need for vercel <-- //
     app.use((req,res) => nextHandler(req, res))
         // SELFHOSTING
     nextApp.prepare().then(() => {
-        app.listen(PORT, () => {
+        
             // payload.logger.info(`> Payload - Ready on ${process.env.NEXT_PUBLIC_SERVER_URL}`);
-
+            app.listen(PORT,async () => {
+                
+            })
         });
-    })
+
 };
 start()
 

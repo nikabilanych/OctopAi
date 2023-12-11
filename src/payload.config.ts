@@ -3,10 +3,11 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { slateEditor } from  '@payloadcms/richtext-slate'  
 import { webpackBundler } from '@payloadcms/bundler-webpack'
 import path from 'path'
+import { Users } from './collections/Users'
 export default buildConfig({
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "",
     //TODO: add products etc.
-    collections:[],
+    collections:[Users],
     //TODO: add sell route
     routes: {
         admin: "/sell"
@@ -14,6 +15,7 @@ export default buildConfig({
     admin:{
         // TODO: add admin dashboard
         // TODO: add icon & thumbnail
+        user: "users",
         bundler: webpackBundler(),
         meta:{
             titleSuffix: " - DigitalOctopus",

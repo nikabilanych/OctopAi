@@ -15,7 +15,11 @@ export const Users: CollectionConfig={
     fields: [
         {
             name: "role",
+            defaultValue: "user",
+            required: true,
             admin: {
+                //only visible to admins:
+            // condition: ({req}) => req.user.role ==="admin"
                 condition: () => false,
             },
             type: "select",

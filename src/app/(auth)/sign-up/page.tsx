@@ -9,7 +9,6 @@ import Link from "next/link";
 import { useForm } from "react-hook-form"; //useForm from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { trpc } from "@/trpc/client";
 
 import { authCredentials, authCredentialsType } from "@/lib/validators/account-validator";
 

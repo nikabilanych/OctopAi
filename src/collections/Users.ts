@@ -5,9 +5,19 @@ import { CollectionConfig } from "payload/types";
 //adjust dashboard based off what user is signed in
 export const Users: CollectionConfig={
     slug: "users",
+    auth: true,
+    access: {
+        read: () => true,
+        create: () => true,
+        update: () => true,
+        delete: () => true,
+    },
     fields: [
         {
             name: "role",
+            admin: {
+                condition: () => false,
+            },
             type: "select",
             options: [
                 {
@@ -20,6 +30,6 @@ export const Users: CollectionConfig={
                 },
             ],
         },
-    ],
+    ], 
 }
 

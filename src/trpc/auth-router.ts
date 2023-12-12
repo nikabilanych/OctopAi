@@ -1,9 +1,10 @@
-import { authCredentialsType, authCredentials } from "@/lib/validators/account-validator";
+import { authCredentials } from "../lib/validators/account-validator";
 
 import { publicProcedure, router } from "./trpc";
-import { getPayloadClient } from "@/get-payload";
+import { getPayloadClient } from "../get-payload";
 
 import { TRPCError } from "@trpc/server";
+
 export const authRouter = router({
     createPayloadUser: publicProcedure
     .input(authCredentials)
@@ -12,7 +13,7 @@ export const authRouter = router({
 
             const payload = await getPayloadClient()
             // if user exists
-            const {docs} = await payload.find({
+            const { docs: users } = await payload.find({
                 collection: "users",
                 where: {
                     email: {
@@ -20,16 +21,15 @@ export const authRouter = router({
                     }
                 }
             })
-            if(docs.length !== 0){
+            if(users.length !== 0){
                 throw new  TRPCError({code: "CONFLICT", message:"User already exists"})
             }
-            const user = await payload.create({
+            await payload.create({
                 collection: "users",
                 data: {
-                    email,
-                    password
+            
                 }
             })
-            return user
+
 }),
 })

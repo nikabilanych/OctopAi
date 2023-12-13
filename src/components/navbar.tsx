@@ -1,4 +1,5 @@
 "use client";
+import UserAccountNav from "./UserAccountNav";
 import React from "react";
 import { Button } from "./ui/button";
 import Wrapper from "./wrapper";
@@ -6,9 +7,11 @@ import Link from "next/link";
 import { Icons } from "./Icons";
 import Cart from "./Cart";
 import NavItems from "./NavItems";
-
-const Navbar = () => {
-  const session = null;
+import { getServerSideUser } from "@/lib/payload-utils";
+import { cookies } from "next/headers";
+const Navbar = async () => {
+  const nextCookies = cookies();
+  const { user } = await getServerSideUser(nextCookies);
   return (
     <div className="sticky inset-x-0 top-0 z-50 h-16 bg-white">
       <header className="relative bg-white">
@@ -27,7 +30,8 @@ const Navbar = () => {
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {/* TODO: add currency switch and language */}
-                  {!session ? (
+
+                  {!user ? (
                     <Button variant={"ghost"} asChild>
                       <Link href={"/sign-in"} className="text-sm font-medium">
                         Sign in
@@ -36,43 +40,45 @@ const Navbar = () => {
                   ) : null}
 
                   {/* decorational, separate two buttons */}
-                  {!session ? (
+                  {!user ? (
                     <span
                       area-hidden="true"
                       className="h-6 w-px bg-gray-200"
                     ></span>
                   ) : null}
 
-                  {!session ? (
+                  {!user ? (
                     <Button asChild variant={"ghost"}>
                       <Link href={"/sign-up"} className="text-sm font-medium">
-                        Sign up
+                        Create an account
                       </Link>
                     </Button>
                   ) : (
-                    <p></p>
+                    <p>
+                      <UserAccountNav user={user} />
+                    </p>
                   )}
-                  {session ? (
+                  {user ? (
                     <span
                       area-hidden="true"
                       className="h-6 w-px bg-gray-200"
                     ></span>
                   ) : null}
-                  {session ? (
+                  {user ? (
                     <Button variant={"ghost"} asChild>
                       <Link href={"/dashboard"} className="text-sm font-medium">
                         Dashboard
                       </Link>
                     </Button>
                   ) : null}
-                  {session ? (
+                  {user ? (
                     <span
                       area-hidden="true"
                       className="h-6 w-px bg-gray-200"
                     ></span>
                   ) : null}
 
-                  {session ? null : (
+                  {user ? null : (
                     <div className="flex lg:ml-6">
                       <span
                         className="h-6 w-px bg-gray-200"

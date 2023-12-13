@@ -5,6 +5,7 @@ import { webpackBundler } from '@payloadcms/bundler-webpack'
 import path from 'path'
 import { Users } from './collections/Users'
 import dotenv from 'dotenv'
+
 dotenv.config({
     path: path.resolve(__dirname, "../.env"),
 });
@@ -14,14 +15,11 @@ export default buildConfig({
     // users collection - authentication!!!
     // set auth -> true
     collections:[Users],
-    
     //TODO: add sell route
     routes: {
         admin: "/sell"
     },
     admin:{
-        // TODO: add admin dashboard
-        // TODO: add icon & thumbnail
         user: "users",
         bundler: webpackBundler(),
         meta:{

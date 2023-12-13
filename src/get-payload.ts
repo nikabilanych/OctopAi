@@ -1,15 +1,27 @@
-// initialize cms via payload
-// https://payloadcms.com/docs/getting-started/installation
+// initialize cms payload instance
+
 import dotenv from "dotenv";
 import path from "path";
 import type { InitOptions } from "payload/config";
 import payload, { Payload } from "payload";
+import nodemailer from "nodemailer";
 
 dotenv.config({
     path: path.resolve(__dirname, "../.env"),
 });
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "stmp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_SERVER_USER,
+      pass: process.env.EMAIL_SERVER_PASSWORD,
+    },
+  });
 //saving resourcing thanks to caching (esp during development)
 let cached = (global as any).payload;
+
 if (!cached) {
     cached = (global as any).payload = {
         client: null,
@@ -28,16 +40,22 @@ if (cached.client){
 }
 if (!cached.promise){
     cached.promise = payload.init({
+        email:{
+            transport: transporter,
+            fromAddress: "hello@digitaloctopus.com",
+            fromName:"digitalOctopus",
+
+        },
         secret:process.env.PAYLOAD_SECRET,
         local:initOptions?.express ? false : true,
         ...(initOptions || {}),
     })
 }
 try {
-    cached.cliet = await cached.promise
-} catch (err:unknown) {
-    cached.promise=null;
-    throw err
+    cached.client = await cached.promise
+} catch (e:unknown) {
+    cached.promise=null
+    throw e
 }
 return cached.client
 }

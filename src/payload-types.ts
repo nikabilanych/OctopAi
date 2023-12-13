@@ -5,8 +5,7 @@
  * DO NOT MODIFY IT BY HAND. Instead, modify your source Payload config,
  * and re-run `payload generate:types` to regenerate this file.
  */
-//via package.json
-//generate:types
+
 export interface Config {
   collections: {
     users: User;
@@ -17,7 +16,7 @@ export interface Config {
 }
 export interface User {
   id: string;
-  role?: ('admin' | 'user') | null;
+  role: 'admin' | 'user';
   updatedAt: string;
   createdAt: string;
   email: string;

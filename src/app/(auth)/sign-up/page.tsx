@@ -8,17 +8,21 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { useForm } from "react-hook-form"; //useForm from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-
+import { trpc } from "@/trpc/client";
 import { authCredentials, authCredentialsType } from "@/lib/validators/account-validator";
 
+
 const Page = () => {
-  const { register, handleSubmit, formState: { errors }}= useForm<authCredentialsType>({
+  const { register, handleSubmit, formState: { errors }, watch }= useForm<authCredentialsType>({
   resolver: zodResolver(authCredentials)
 });
+const {mutate,isLoading} = trpc.auth.createPayloadUser.useMutation({
+
+})
 
 //send data to server
-const onSubmit = ({email,password}:authCredentialsType)=>{
+const onSubmit = ({ email,password }: authCredentialsType)=>{
+  mutate({ email,password })
 }
     return (
         <>
@@ -39,16 +43,16 @@ const onSubmit = ({email,password}:authCredentialsType)=>{
             <div className="grid gap-2">
             <div className="grid gap-1 py-2">
               <Label htmlFor='email' className="ml-2 mb-1">Email</Label>
-              <Input {...register("email")}className={cn({"focus-visible:ring-fuchsia-500/50":errors.email,})} placeholder="johndoe@me.com">
+              <Input {...register('email')} required className={cn({"focus-visible:ring-red-500/50":errors.email,})} placeholder="johndoe@me.com">
               </Input>
             </div>          
 
             <div className="grid gap-1 py-2">
-              <Label htmlFor='email' className="ml-2 mb-1">Password</Label>
-              <Input {...register("password")}className={cn({"focus-visible:ring-fuchsia-500/50":errors.password,})} placeholder="password">
+              <Label htmlFor='password' className="ml-2 mb-1">Password</Label>
+              <Input type="password" required {...register("password")} className={cn({"focus-visible:ring-red-500/50":errors.password,})} placeholder="password">
               </Input>
             </div>          
-        <Button type="submit" {...handleSubmit} className="w-full">Create account</Button>
+        <Button>Create account</Button>
           </div>          
          
   </form>

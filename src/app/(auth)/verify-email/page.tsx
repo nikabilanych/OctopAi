@@ -1,27 +1,35 @@
 import React from "react";
+import VerifyEmail from "@/components/VerifyEmail";
 
 import { Icons } from "@/components/Icons";
 interface PageProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-const VerifyEmail = ({ searchParams }: PageProps) => {
+const VerifyEmailPage = ({ searchParams }: PageProps) => {
   const token = searchParams.token;
   const toEmail = searchParams.to;
   return (
     <div className="container relative flex pt-20 flex-col items-center justify-center lg:px-0">
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         {token && typeof token === "string" ? (
-          <div className="grid gap-6">let user in</div>
+          <div className="grid gap-6">
+            <VerifyEmail token={token} />
+          </div>
         ) : (
           <div className="flex h-full flex-col items-center justify-center space-y-1">
             <div className="relative mb-4 h-60 w-60 text-muted-foreground">
               <Icons.logo className="h-full w-full" />
             </div>
             <h3 className="font-semibold text-2xl">Check your email</h3>
-            {toEmail? <p className="text-center text-muted-foreground">
-              We&apos;ve sent a verification link to <span className="font-semibold">{toEmail}</span>.
-            </p> : (<p>We&apos;ve sent a verification link to your email.</p>)}
+            {toEmail ? (
+              <p className="text-center text-muted-foreground">
+                We&apos;ve sent a verification link to{" "}
+                <span className="font-semibold">{toEmail}</span>.
+              </p>
+            ) : (
+              <p>We&apos;ve sent a verification link to your email.</p>
+            )}
           </div>
         )}
       </div>
@@ -29,4 +37,4 @@ const VerifyEmail = ({ searchParams }: PageProps) => {
   );
 };
 
-export default VerifyEmail;
+export default VerifyEmailPage;

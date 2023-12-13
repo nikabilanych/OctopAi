@@ -34,9 +34,16 @@ const LoginPage = () => {
   //if an item inder the key "as" is equal to "seller"
   const isSeller = searchParams.get("as") === "seller";
 
+  const continueAsSeller = () => {
+    router.push("?as=seller");
+  };
+  const continueAsCustomer = () => {
+    router.replace("/sign-in", undefined);
+  };
+
   const origin = searchParams.get("origin");
 
-  const { mutate, isLoading } = trpc.auth.signIn.useMutation({
+  const { mutate: SignIn, isLoading } = trpc.auth.signIn.useMutation({
     onSuccess: async () => {
       toast.success("Signed in successfully");
 
@@ -53,7 +60,7 @@ const LoginPage = () => {
         router.push("/sell");
         return;
       }
-      
+
       router.push("/");
     },
     onError: (err) => {
@@ -65,7 +72,7 @@ const LoginPage = () => {
 
   //send data to server
   const onSubmit = ({ email, password }: authCredentialsType) => {
-    mutate({ email, password });
+    SignIn({ email, password });
   };
   return (
     <>
@@ -142,6 +149,15 @@ const LoginPage = () => {
                 </span>
               </div>
             </div>
+            {isSeller ? (
+              <Button variant="outline" onClick={continueAsCustomer}>
+                Continue as customer
+              </Button>
+            ) : (
+              <Button variant="outline" onClick={continueAsSeller}>
+                Continue as a seller{" "}
+              </Button>
+            )}
           </div>
         </div>
       </div>

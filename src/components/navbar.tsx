@@ -45,7 +45,7 @@ const Navbar = () => {
 
                   {!session ? (
                     <Button asChild variant={"ghost"}>
-                      <Link href={"/signup"} className="text-sm font-medium">
+                      <Link href={"/sign-up"} className="text-sm font-medium">
                         Sign up
                       </Link>
                     </Button>

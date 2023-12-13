@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { Loader2, XCircle } from "lucide-react";
 import { buttonVariants } from "./ui/button";
-import { Icons } from "./Icons";
+
 
 interface VerifyEmailProps {
   token: string;
@@ -28,7 +28,7 @@ const VerifyEmail = ({ token }: VerifyEmailProps) => {
     return (
       <div className="flex flex-col items-center justify-center h-full">
         <div className="relative mb-4 h-60 w-60 text-muted-foreground">
-          <Icons.logo />
+
         </div>
         <h3 className="font-semibold text-2xl">You&apos;re all set!</h3>
         <p className="text-muted-foreground mt-2 text-center">

@@ -2,6 +2,7 @@ import "@/app/globals.css";
 
 import { Familjen_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Toaster } from "sonner";
 
 import Providers  from "@/components/Providers";
 import Navbar from "@/components/Navbar";
@@ -38,6 +39,7 @@ export default function RootLayout({
           </div>
           </Providers>
         </main>
+        <Toaster position='top-center' richColors />
       </body>
     </html>
   );

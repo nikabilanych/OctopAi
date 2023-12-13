@@ -19,7 +19,7 @@ const createContext = ({
     req,
     res,
   })
-  
+  //typescript utility
   export type ExpressContext = inferAsyncReturnType<typeof createContext>
 
 const start = async () => {

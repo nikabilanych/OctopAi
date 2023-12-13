@@ -29,7 +29,7 @@ const Navbar = () => {
                   {/* TODO: add currency switch and language */}
                   {!session ? (
                     <Button variant={"ghost"} asChild>
-                      <Link href={"/login"} className="text-sm font-medium">
+                      <Link href={"/sign-in"} className="text-sm font-medium">
                         Sign in
                       </Link>
                     </Button>

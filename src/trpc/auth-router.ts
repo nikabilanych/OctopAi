@@ -5,6 +5,7 @@ import { getPayloadClient } from "../get-payload";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
+
 export const authRouter = router({
     createPayloadUser: publicProcedure
     .input(authCredentials)
@@ -33,7 +34,7 @@ export const authRouter = router({
                     role: 'user',
                 }
             })
-            return {success: true, sentToEmail: email}
+            return { success: true, sentToEmail: email }
         }),
         verifyEmail: publicProcedure
         .input(z.object({token: z.string()}))
@@ -49,6 +50,35 @@ export const authRouter = router({
                 return {success: true}
             }
             throw new TRPCError({code: "NOT_FOUND"})
-})
+}),
+        signIn: publicProcedure
+        .input(authCredentials)
+        .mutation(async ({ input, ctx })=>{
+            const { email, password }  = input
+            const { res } = ctx
+            const payload = await getPayloadClient()
+            
+            try {
+                await payload.login({
+                    collection: 'users',
+                    data:{
+                        email,
+                        password
+                    },
+                    //request coming from express 
+                    res
+            })
+            return {success: true}
+            }
+            catch (e) {
+                throw new TRPCError({code: "NOT_FOUND"})
+            }
 
 })
+}
+)
+
+
+// login -> an exchange between email & password -> into server
+//  returns a token (jwt) db session id ... 
+// stored as a cookie  

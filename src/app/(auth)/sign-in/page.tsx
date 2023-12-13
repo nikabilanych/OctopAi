@@ -15,35 +15,51 @@ import {
   authCredentialsType,
 } from "@/lib/validators/account-validator";
 import { ZodError } from "zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const Page = () => {
+const LoginPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<authCredentialsType>({
     resolver: zodResolver(authCredentials),
   });
 
+  const searchParams = useSearchParams();
+
   const router = useRouter();
 
-  const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({
-    onError: (err) => {
-      ///USER EXISTS ?
-      if (err.data?.code === "CONFLICT") {
-        toast.error("This email is already in use. Sign in instead?");
-      }
-      if (err instanceof ZodError) {
-        toast.error(err.issues[0].message);
+  //key value pair /sign-in?as=seller
+  //if an item inder the key "as" is equal to "seller"
+  const isSeller = searchParams.get("as") === "seller";
+
+  const origin = searchParams.get("origin");
+
+  const { mutate, isLoading } = trpc.auth.signIn.useMutation({
+    onSuccess: async () => {
+      toast.success("Signed in successfully");
+
+      router.refresh();
+
+      if (origin) {
+        //send back to origin
+        router.push(`/${origin}`);
         return;
       }
-      toast.error("Something went wrong. Please try again.");
+
+      if (isSeller) {
+        //insert products
+        router.push("/sell");
+        return;
+      }
+      
+      router.push("/");
     },
-    onSuccess: ({ sentToEmail }) => {
-      toast.success(`We have sent a verification link to ${sentToEmail}.`);
-      router.push("/verify-email?to=" + sentToEmail);
+    onError: (err) => {
+      if (err.data?.code === "UNAUTHORIZED") {
+        toast.error("Invalid email or password.");
+      }
     },
   });
 
@@ -58,17 +74,16 @@ const Page = () => {
           <div className="flex flex-col items-center space-y-2 text-center">
             <Icons.logo className="h-10 w-10" />
             <h1 className="text-2xl font-bold tracking-tight">
-              Create an account
+              Sign in to your account
             </h1>
             <Link
-              href={"/sign-in"}
+              href={"/sign-up"}
               className={buttonVariants({
                 variant: "link",
                 className: "gap-1",
               })}
             >
-              Already have an account? Sign in
-              <ArrowRight className="h-4 w-4" />
+              Don&apos;t have an account? <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           <div className="grid gap-6">
@@ -111,13 +126,26 @@ const Page = () => {
                     </p>
                   )}
                 </div>
-                <Button>Create account</Button>
+                <Button>Sign In</Button>
               </div>
             </form>
+            <div className="relative">
+              <div
+                aria-hidden="true"
+                className="inset-0 absolute flex items-center"
+              >
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  or
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </>
   );
 };
-export default Page;
+export default LoginPage;

@@ -40,7 +40,7 @@ const LoginPage = () => {
   const continueAsCustomer = () => {
     router.replace("/sign-in", undefined);
   };
-
+  const role = isSeller ? "seller" : "";
   const origin = searchParams.get("origin");
 
   const { mutate: SignIn, isLoading } = trpc.auth.signIn.useMutation({
@@ -81,7 +81,7 @@ const LoginPage = () => {
           <div className="flex flex-col items-center space-y-2 text-center">
             <Icons.logo className="h-10 w-10" />
             <h1 className="text-2xl font-bold tracking-tight">
-              Sign in to your account
+              Sign in to your {role} account
             </h1>
             <Link
               href={"/sign-up"}
@@ -150,11 +150,19 @@ const LoginPage = () => {
               </div>
             </div>
             {isSeller ? (
-              <Button variant="outline" onClick={continueAsCustomer}>
+              <Button
+                variant="outline"
+                onClick={continueAsCustomer}
+                disabled={isLoading}
+              >
                 Continue as customer
               </Button>
             ) : (
-              <Button variant="outline" onClick={continueAsSeller}>
+              <Button
+                variant="outline"
+                disabled={isLoading}
+                onClick={continueAsSeller}
+              >
                 Continue as a seller{" "}
               </Button>
             )}

@@ -111,7 +111,7 @@ const Page = () => {
                     </p>
                   )}
                 </div>
-                <Button>Create account</Button>
+                <Button disabled={isLoading}>Create account</Button>
               </div>
             </form>
           </div>

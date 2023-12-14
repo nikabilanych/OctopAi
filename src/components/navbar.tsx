@@ -1,4 +1,3 @@
-"use client";
 import UserAccountNav from "./UserAccountNav";
 import React from "react";
 import { Button } from "./ui/button";
@@ -9,6 +8,7 @@ import Cart from "./Cart";
 import NavItems from "./NavItems";
 import { getServerSideUser } from "@/lib/payload-utils";
 import { cookies } from "next/headers";
+
 const Navbar = async () => {
   const nextCookies = cookies();
   const { user } = await getServerSideUser(nextCookies);
@@ -31,32 +31,32 @@ const Navbar = async () => {
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {/* TODO: add currency switch and language */}
 
-                  {!user ? (
+                  {user ? null : (
                     <Button variant={"ghost"} asChild>
                       <Link href={"/sign-in"} className="text-sm font-medium">
                         Sign in
                       </Link>
                     </Button>
-                  ) : null}
+                  )}
 
                   {/* decorational, separate two buttons */}
-                  {!user ? (
+                  {user ? null : (
                     <span
                       area-hidden="true"
                       className="h-6 w-px bg-gray-200"
                     ></span>
-                  ) : null}
+                  )}
 
-                  {!user ? (
+                  {user ? (
+                    <p>
+                      <UserAccountNav user={user} />
+                    </p>
+                  ) : (
                     <Button asChild variant={"ghost"}>
                       <Link href={"/sign-up"} className="text-sm font-medium">
                         Create an account
                       </Link>
                     </Button>
-                  ) : (
-                    <p>
-                      <UserAccountNav user={user} />
-                    </p>
                   )}
                   {user ? (
                     <span

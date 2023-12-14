@@ -44,6 +44,7 @@ export const Products: CollectionConfig = {
             type: 'number',
             required: true,
         },
+        //TODO: add product_files
         {
             name: "category",
             label: "Category",
@@ -83,9 +84,56 @@ export const Products: CollectionConfig = {
                 {
                     label: "Denied",
                     value: "denied",
-                }
+                },
             ],
             required: true,
-        }
+        },
+        {
+            name:"priceId",
+            access: {
+                create: () => false,
+                update: () => false,
+                read: () => false,
+            },
+            type: "text",
+            required: true,
+            admin: {
+                hidden: true
+            }
+        },
+        {
+            name:"stripeId",
+            access: {
+                create: () => false,
+                update: () => false,
+                read: () => false,
+            },
+            type: "text",
+            required: true,
+            admin: {
+                hidden: true
+            }
+        },
+        {
+            name:"images",
+            type: "array",
+            label:"Product Images",
+            required: true,
+            minRows: 1,
+            maxRows: 4,
+            labels: {
+                singular: "Image",
+                plural: "Images",
+            },
+            //TODO: add media coll ?
+            fields: [
+                {
+                    name: "image",
+                    type: "upload",
+                    relationTo: "media",
+                    required: true,
+                },
+            ],
+        },
     ],
 }

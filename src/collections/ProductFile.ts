@@ -74,6 +74,9 @@ export const ProductFiles: CollectionConfig = {
     },
     access:{
         read: ownedOrPurchased,
+        // users won't be able to update OR delete product files
+        update: ({req})=> req.user.role === "admin",
+        delete: ({req})=> req.user.role === "admin",
 
     },
     upload:{
@@ -92,11 +95,5 @@ export const ProductFiles: CollectionConfig = {
                 condition: () => false,
             },
         },
-        {
-            name: "url",
-            label: "URL",
-            type: "text",
-            required: true,
-        }
     ]
 }

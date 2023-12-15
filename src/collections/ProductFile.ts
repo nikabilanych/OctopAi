@@ -9,7 +9,7 @@ const addUser:BeforeChangeHook=({req,data})=>{
        user: user?.id
    }
 }
-const ownedOrPurchased = ():Access => async ({ req }) => {
+const ownedOrPurchased:Access = async ({ req }) => {
     const user = req.user as User | undefined
     if(!user){
         return false
@@ -51,14 +51,15 @@ const ownedOrPurchased = ():Access => async ({ req }) => {
             ? product.product_files 
             : product.product_files.id
         })
+        })
         .filter(Boolean)
         .flat()
-    })
     
-    return {
-        id:{
-            in: [...ownProductFileId, ...purchasedProductFileId]
-        }
+        return {
+            //access owned and purchased files
+            id:{
+                in: [...ownProductFileId, ...purchasedProductFileId]
+            }
     }
 }
 
@@ -72,7 +73,8 @@ export const ProductFiles: CollectionConfig = {
         beforeChange:[addUser],
     },
     access:{
-        read: ownedOrPurchased()
+        read: ownedOrPurchased,
+
     },
     upload:{
         staticURL: "/product_files",

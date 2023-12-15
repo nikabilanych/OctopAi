@@ -67,7 +67,7 @@ export const Media: CollectionConfig = {
     
     mimeTypes:[
         //enforce image types
-        'image/',
+        'image/*',
     ]
     },
     fields: [

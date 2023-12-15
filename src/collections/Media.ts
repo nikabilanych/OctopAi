@@ -1,17 +1,45 @@
 // table media
 // use hooks -> events (function)
 
-import { CollectionConfig } from 'payload/types'
+import { Access, CollectionConfig } from 'payload/types'
+import { User } from '../payload-types'
+const isAdminOrHasImageAccess = ():Access => async ({ req }) => {
+        const user = req.user as User | undefined
+        if(!user){
+            return false
+        }
+        if (user.role === 'admin'){
+            return true
+        }
+        //access to user's images
+        return { user: { equals: req.user.id },
+        }
+    }
+
 
 export const Media: CollectionConfig = {
     slug: 'media',
     hooks: {
         beforeChange: [({req,data}) => {return {
             ...data,
-            user: req.user._id}
+            user: req.user.id}
         }
     ],
 },
+    admin: {
+        hidden:({user})=> user?.role !== 'admin',
+    },
+    access: {
+        read: async ({ req}) => {
+            const referer = req.headers.referer
+            if(!req.user || !referer?.includes("/sell")){
+                return true
+            }
+            return await isAdminOrHasImageAccess()({req}) 
+        } ,
+        delete: isAdminOrHasImageAccess(),
+        update: isAdminOrHasImageAccess(),
+    },
     upload: {
         staticURL: '/media',
         staticDir: 'media',
@@ -36,6 +64,7 @@ export const Media: CollectionConfig = {
             position: 'centre',
         },
     ],
+    
     mimeTypes:[
         //enforce image types
         'image/',

@@ -6,6 +6,7 @@ import path from 'path'
 import { Users } from './collections/Users'
 import dotenv from 'dotenv'
 import { Products } from './collections/Products'
+import { Media } from './collections/Media'
 
 dotenv.config({
     path: path.resolve(__dirname, "../.env"),
@@ -15,7 +16,7 @@ export default buildConfig({
     //TODO: add products etc.
     // users collection - authentication!!!
     // set auth -> true
-    collections:[Users,Products],
+    collections:[Users,Products,Media],
     //TODO: add sell route
     routes: {
         admin: "/sell"

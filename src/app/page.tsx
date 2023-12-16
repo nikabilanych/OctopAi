@@ -49,7 +49,11 @@ export default async function Home() {
             <Button variant="ghost">Our quality promise &rarr;</Button>
           </div>
         </div>
-        <ProductReel title={"Trending"} />
+        <ProductReel
+          title={"Trending"}
+          href="/products"
+          query={{ limit: 4, sort: "desc" }}
+        />
       </Wrapper>
       <section className="border-t border-gray-200 bg-pyrply2/5">
         <Wrapper className="py-20">

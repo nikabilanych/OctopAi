@@ -1,8 +1,8 @@
+"use client";
 import Link from "next/link";
 import React from "react";
 import { trpc } from "@/trpc/client";
 import { QueryValidatorType } from "@/lib/validators/query-validator";
-import { query } from "express";
 
 interface ProductReelProps {
   title: string;

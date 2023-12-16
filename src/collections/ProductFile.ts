@@ -11,16 +11,16 @@ const addUser:BeforeChangeHook=({req,data})=>{
 }
 const ownedOrPurchased:Access = async ({ req }) => {
     const user = req.user as User | undefined
-    if(!user){
-        return false
-    }
+
     if (user?.role === 'admin'){
         return true
+    }
+    if(!user){
+        return false
     }
     //access to user's images
     const { docs: products } = await req.payload.find({
         collection: "products",
-        //only search id from the table
         depth:0,
         where: {
             user: {
@@ -46,7 +46,6 @@ const ownedOrPurchased:Access = async ({ req }) => {
         return order.products.map((product) => {
             if (typeof product === "string") 
             return req.payload.logger.error('Search depth not efficient to find purchased file IDs')
-
             return typeof product.product_files === "string" 
             ? product.product_files 
             : product.product_files.id

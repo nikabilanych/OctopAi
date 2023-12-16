@@ -43,8 +43,8 @@ export interface Product {
   category: 'ui_kits' | 'icons';
   product_files: string | ProductFile;
   approvedForSales: 'pending' | 'approved' | 'denied';
-  priceId: string;
-  stripeId: string;
+  priceId?: string | null;
+  stripeId?: string | null;
   images: {
     image: string | Media;
     id?: string | null;
@@ -57,7 +57,7 @@ export interface ProductFile {
   user?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
-  url: string;
+  url?: string | null;
   filename?: string | null;
   mimeType?: string | null;
   filesize?: number | null;

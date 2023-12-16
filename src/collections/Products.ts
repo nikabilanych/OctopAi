@@ -96,7 +96,7 @@ export const Products: CollectionConfig = {
                 read: () => false,
             },
             type: "text",
-            required: true,
+            required: false,
             admin: {
                 hidden: true
             }
@@ -109,7 +109,7 @@ export const Products: CollectionConfig = {
                 read: () => false,
             },
             type: "text",
-            required: true,
+            required: false,
             admin: {
                 hidden: true
             }

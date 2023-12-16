@@ -7,7 +7,7 @@ import { productRouter } from "./product-router"
 
 export const appRouter = router({
     auth: authRouter,
-    products: productRouter,
+    products : productRouter,
 
 })
 export type AppRouter = typeof appRouter;

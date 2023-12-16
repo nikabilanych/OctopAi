@@ -1,13 +1,29 @@
 import Link from "next/link";
 import React from "react";
+import { trpc } from "@/trpc/client";
+import { QueryValidatorType } from "@/lib/validators/query-validator";
+import { query } from "express";
+
 interface ProductReelProps {
   title: string;
   subtitle?: string;
   href?: string;
+  query: QueryValidatorType;
 }
+
+const FALLBACK_LIMIT = 4;
 const ProductReel = (props: ProductReelProps) => {
   //destructure the title
-  const { title, subtitle, href } = props;
+  const { title, subtitle, href, query } = props;
+
+  //querying
+  const { data } = trpc.products.getInfiniteProducts.useInfiniteQuery(
+    { limit: query.limit ?? FALLBACK_LIMIT, query },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextPage,
+    }
+  );
+
   return (
     <section className="py-12">
       <div className="md:flex md:items-center md:justify-between mb-4">
@@ -35,7 +51,7 @@ const ProductReel = (props: ProductReelProps) => {
       <div className="relative">
         <div className="mt-6 flex items-center w-full">
           <div className="w-full grid grid-cols-2 gap-x-4 gay-y-10 sm:gap-x-6 md:gril-cols-4 md:gap-y-10 lg:gap-x-8">
-            
+            {}
           </div>
         </div>
       </div>

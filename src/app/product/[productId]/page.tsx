@@ -153,6 +153,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 				</div>
 				{/* related products */}
 				<ProductReel
+					// TODO: product || products ?
 					href="/products"
 					query={{ category: product.category, limit: 4 }}
 					title={`Related ${label}`}

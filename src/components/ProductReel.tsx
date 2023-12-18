@@ -29,7 +29,7 @@ const ProductReel = (props: ProductReelProps) => {
     );
 
   // displaying
-  //flattened map
+  // flattened map
 
   const products = queryData?.pages.flatMap((page) => page.products) || [];
 

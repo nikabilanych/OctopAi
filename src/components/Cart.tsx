@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
+import { useState, useEffect } from "react";
 import { ShoppingBag } from "lucide-react";
 import CartItem from "./CartItem";
 import {
@@ -27,15 +28,25 @@ const Cart = () => {
 		0
 	);
 
+	const [isMounted, setIsMounted] = useState(false);
+
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
 	return (
 		<Sheet>
 			<SheetTrigger className="group m-2 hover:transform hover:scale-110 flex items-center p-2">
 				<ShoppingBag className="h-6 w-6  flex-shrink-0 text-black group-hover:text-[#780f9b]/80" />
-				<span className="ml-2 text-sm font-medium text-black group-hover:text-gray-100/60"></span>
+				<span className="ml-2 text-sm font-medium text-black group-hover:text-gray-100/60">
+					{isMounted ? itemCount : 0}
+				</span>
 			</SheetTrigger>
 			<SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
 				<SheetHeader className="space-y-3 pr-6">
-					<SheetTitle className="text-lg font-semibold">Cart(0)</SheetTitle>
+					<SheetTitle className="text-lg font-semibold">
+						Cart({itemCount})
+					</SheetTitle>
 				</SheetHeader>
 
 				{itemCount > 0 ? (
@@ -47,7 +58,7 @@ const Cart = () => {
 								<CartItem key={product.id} product={product} />
 							))}
 						</div>
-						<div className="space-y-4 pr-6"> 
+						<div className="space-y-4 pr-6">
 							<Separator />
 							<div className="space-y-2 text-sm">
 								<div className="flex">

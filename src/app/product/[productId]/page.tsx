@@ -1,4 +1,4 @@
-import Wrapper from "@/components/wrapper";
+import Wrapper from "@/components/Wrapper";
 import Link from "next/link";
 import React from "react";
 import { getPayloadClient } from "@/get-payload";
@@ -142,8 +142,8 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 											className="mr-2 h-5 w-5 text-gray-400 flex-shrink-0"
 										/>
 										<span className="text-muted-foreground hover:text-gray-900">
-											Not satisfied? Gotcha covered with our 30-day money back
-											guarantee{" "}
+											Not satisfied? Gotcha! &nbsp; We offer 30-day money back
+											guarantee.{" "}
 										</span>
 									</div>
 								</div>

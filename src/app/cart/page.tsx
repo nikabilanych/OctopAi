@@ -1,10 +1,26 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { useCart } from "@/hooks/use-cart";
 import { Icons } from "@/components/Icons";
+import { useEffect, useState } from "react";
+import { PRODUCT_CATEGORIES } from "@/config";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Check, Loader2, X } from "lucide-react";
 const CartPage = () => {
 	const { items, removeItem } = useCart();
+	const [isMounted, setIsMounted] = useState(false);
+
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+	const totalPrice = items.reduce(
+		(total, { product }) => total + product.price,
+		0
+	);
+	const flatFee = 1;
 
 	return (
 		<div className="bg-white">
@@ -17,11 +33,12 @@ const CartPage = () => {
 					<div
 						className={cn("lg:col-span-7", {
 							"rounded-lg border-2 border-dashed border-zinc-200 p-12":
-								items.length === 0,
+								isMounted && items.length === 0,
 						})}
 					>
 						<h2 className="sr-only">Items in your shopping cart</h2>
-						{items.length === 0 ? (
+
+						{isMounted && items.length === 0 ? (
 							<div className="flex h-full space-y-1 flex-col items-center justify-center">
 								<div
 									className="relative mb-4 h-40 w-40 text-muted-foreground"
@@ -29,9 +46,137 @@ const CartPage = () => {
 								>
 									<Icons.cecilian />
 								</div>
+								<h3 className="text-2xl font-semibold">Your cart is empty</h3>
+								<p className="text-muted-foreground">
+									Whoops! Nothing to show here yet
+								</p>
 							</div>
 						) : null}
+
+						<ul
+							className={cn({
+								"divide-y divide-gray-200 border-b border-t border-gray-200":
+									isMounted && items.length > 0,
+							})}
+						>
+							{isMounted &&
+								items.map(({ product }) => {
+									const category = PRODUCT_CATEGORIES.find(
+										(category) => category.value === product.category
+									)?.label;
+									const { image } = product.images[0];
+									const label = PRODUCT_CATEGORIES.find(
+										({ value }) => value === product?.category
+									)?.label;
+									return (
+										<li key={product.id} className="flex py-6 sm:py-10">
+											<div className="flex-shrink-0 ">
+												<div className="relative h-24">
+													{typeof image !== "string" && image.url ? (
+														<Image
+															alt="Product image"
+															src={image.url}
+															fill
+															className="h-full w-full rounded-md object-cover object-center lg:h-48 sm:w-48"
+														/>
+													) : null}
+												</div>
+											</div>
+											<div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
+												<div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
+													<div>
+														<div className="flex justify-between sm:block">
+															<h3 className="text-sm">
+																<Link href={`/product/${product.id}`}>
+																	{product.name}
+																</Link>
+															</h3>
+														</div>
+														<div className="mt-1 flex text-sm">
+															<p className="text-muted-foreground">
+																Category: {label}
+															</p>
+														</div>
+
+														<p className="mt-1 text-sm font-medium text-gray-900">
+															{formatPrice(product.price)}
+														</p>
+													</div>
+													<div className="mt-4 sm:mt-0 sm:pr-9 w-20">
+														<div className="absolute top-0 right-0">
+															<Button
+																aria-label="Remove product"
+																onClick={() => removeItem(product.id)}
+																variant="ghost"
+															>
+																<X className="h-5 w-5" aria-hidden="true" />
+															</Button>
+														</div>
+													</div>
+												</div>
+
+												<p className="mt-4 flex space-x-2 text-sm text-gray-700">
+													<Check
+														className="h-5 w-5 flex-shrink-0 text-green-500"
+														aria-hidden="true"
+													/>
+													<span>Eligible for instant delivery</span>
+												</p>
+											</div>
+										</li>
+									);
+								})}
+						</ul>
 					</div>
+					<section className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
+						<h2 className="text-lg font-medium text-gray-900">Order summary</h2>
+
+						<div className="mt-6 space-y-4">
+							<div className="flex items-center justify-between">
+								<p className="text-sm text-gray-600">Subtotal</p>
+								<p className="text-sm font-medium text-gray-900">
+									{isMounted ? (
+										formatPrice(totalPrice)
+									) : (
+										<Loader2 className="h-4 text-muted-foreground w-4 animate-spin" />
+									)}
+								</p>
+							</div>
+
+							<div className="flex items-center justify-between border-t border-gray-200 pt-4">
+								<div className="flex items-center text-sm text-muted-foreground">
+									<span className="text-sm text-gray-600">
+										Flat transaction fee
+									</span>
+								</div>
+								<div className="text-sm font-medium text-gray-900">
+									{isMounted ? (
+										formatPrice(flatFee)
+									) : (
+										<Loader2 className="h-4 text-muted-foreground w-4 animate-spin" />
+									)}
+								</div>
+							</div>
+
+							<div className="flex items-center justify-between border-t border-b border-gray-200 pt-4">
+								<div className="text-base font-medium text-gray-900">
+									Order Total
+								</div>
+								<div className="text-base font-medium text-gray-900">
+									{isMounted ? (
+										formatPrice(totalPrice + flatFee)
+									) : (
+										<Loader2 className="h-4 text-muted-foreground w-4 animate-spin" />
+									)}
+								</div>
+							</div>
+						</div>
+
+						<div className="mt-6">
+							<Button className="w-full" size={"lg"} type="submit" >Checkout</Button>
+
+						</div>
+					</section>
 				</div>
 			</div>
 		</div>

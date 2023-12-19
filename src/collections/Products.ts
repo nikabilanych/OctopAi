@@ -2,17 +2,25 @@
 
 import { PRODUCT_CATEGORIES } from '../config'
 import { CollectionConfig } from 'payload/types'
+import { BeforeChangeHook } from 'payload/dist/collections/config/types'
+import { Product } from '../payload-types'
+
+const addUser:BeforeChangeHook<Product> = async ({req, data}) => {
+    const user = req.user 
+    return {
+        ...data,
+        user: user.id
+    }
+}
 
 export const Products: CollectionConfig = {
     slug: 'products',
     admin: {
         useAsTitle: 'name',
     },
-    access: {
-        create: () => true,
-        read: () => true,
-        update: () => true,
-        delete: () => true,
+    access: {},
+    hooks:{
+        beforeChange:[addUser],
     },
     fields: [
         {
@@ -96,7 +104,6 @@ export const Products: CollectionConfig = {
                 read: () => false,
             },
             type: "text",
-            required: false,
             admin: {
                 hidden: true
             }
@@ -109,7 +116,7 @@ export const Products: CollectionConfig = {
                 read: () => false,
             },
             type: "text",
-            required: false,
+
             admin: {
                 hidden: true
             }

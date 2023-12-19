@@ -173,8 +173,9 @@ const CartPage = () => {
 						</div>
 
 						<div className="mt-6">
-							<Button className="w-full" size={"lg"} type="submit" >Checkout</Button>
-
+							<Button className="w-full" size={"lg"} type="submit">
+								Checkout
+							</Button>
 						</div>
 					</section>
 				</div>

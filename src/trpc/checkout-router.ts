@@ -75,8 +75,15 @@ export const checkoutRouter = router({
             },
             line_items
             })
+
+            return {
+                url: stripeSession.url 
+            }
         } catch (err) {
-            
+            console.log(err)
+            return{
+                url: null
+            }
             
         }
     })

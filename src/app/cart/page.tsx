@@ -78,23 +78,21 @@ const CartPage = () => {
 						>
 							{isMounted &&
 								items.map(({ product }) => {
-									const category = PRODUCT_CATEGORIES.find(
-										(category) => category.value === product.category
-									)?.label;
 									const { image } = product.images[0];
 									const label = PRODUCT_CATEGORIES.find(
-										({ value }) => value === product?.category
+										(c) => c.value === product?.category
 									)?.label;
+
 									return (
 										<li key={product.id} className="flex py-6 sm:py-10">
 											<div className="flex-shrink-0 ">
-												<div className="relative h-24">
+												<div className="relative h-24 w-24">
 													{typeof image !== "string" && image.url ? (
 														<Image
 															alt="Product image"
 															src={image.url}
 															fill
-															className="h-full w-full rounded-md object-cover object-center lg:h-48 sm:w-48"
+															className="h-full w-full rounded-md object-cover object-center sm:h-48 sm:w-48"
 														/>
 													) : null}
 												</div>
@@ -102,24 +100,30 @@ const CartPage = () => {
 											<div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
 												<div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
 													<div>
-														<div className="flex justify-between sm:block">
+														<div className="flex justify-between ">
 															<h3 className="text-sm">
-																<Link href={`/product/${product.id}`}>
+																<Link
+																	href={`/product/${product.id}`}
+																	className="font-medium text-gray-700 hover:text-gray-800"
+																>
 																	{product.name}
 																</Link>
 															</h3>
 														</div>
+														{/*  */}
 														<div className="mt-1 flex text-sm">
 															<p className="text-muted-foreground">
 																Category: {label}
 															</p>
 														</div>
-
+														{/* price */}
 														<p className="mt-1 text-sm font-medium text-gray-900">
 															{formatPrice(product.price)}
 														</p>
 													</div>
+
 													<div className="mt-4 sm:mt-0 sm:pr-9 w-20">
+														
 														<div className="absolute top-0 right-0">
 															<Button
 																aria-label="Remove product"
@@ -198,7 +202,7 @@ const CartPage = () => {
 								variant="default"
 							>
 								{isLoading ? (
-									<Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+									<Loader2 className="h-4 w-4 animate-spin mr-1.5 " />
 								) : null}
 								Checkout
 							</Button>

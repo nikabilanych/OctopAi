@@ -38,7 +38,7 @@ const Cart = () => {
 		<Sheet>
 			<SheetTrigger className="group m-2 hover:transform hover:scale-110 flex items-center p-2">
 				<ShoppingBag className="h-6 w-6  flex-shrink-0 text-black group-hover:text-[#780f9b]/80" />
-				<span className="ml-2 text-sm font-medium text-black group-hover:text-gray-100/60">
+				<span className="ml-2 text-sm font-medium text-black group-hover:text-[#780f9b]/80">
 					{isMounted ? itemCount : 0}
 				</span>
 			</SheetTrigger>

@@ -13,7 +13,7 @@ const Navbar = async () => {
 	const nextCookies = cookies();
 	const { user } = await getServerSideUser(nextCookies);
 	return (
-		<div className="sticky inset-x-0 top-0 z-50 h-16 bg-white">
+		<div className="sticky text-black inset-x-0 top-0 z-50 h-16 bg-white">
 			<header className="relative bg-white">
 				<Wrapper>
 					<div className="border-b border-gray-200">

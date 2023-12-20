@@ -42,7 +42,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 				equals: productId,
 			},
 			approvedForSales: {
-				equals: true,
+				equals: "approved",
 			},
 		},
 	});

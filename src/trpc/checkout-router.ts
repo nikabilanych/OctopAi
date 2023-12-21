@@ -42,7 +42,7 @@ export const checkoutRouter = router({
             data: {
                 _isPaid: false,
                 user: user.id,
-                products: filteredProducts
+                products: filteredProducts.map((product) => product.id)
             }
         })
 

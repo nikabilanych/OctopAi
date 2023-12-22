@@ -1,13 +1,16 @@
+//server component
+
 import Link from "next/link";
 import { formatPrice } from "@/lib/utils";
 import { PRODUCT_CATEGORIES } from "@/config";
-import { Product, ProductFile } from "@/payload-types";
+import { Product, ProductFile, User } from "@/payload-types";
 import { getPayloadClient } from "@/get-payload";
 import { getServerSideUser } from "@/lib/payload-utils";
 import { Loader2 } from "lucide-react";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
+import PaymentStatus from "@/components/PaymentStatus";
 
 interface PageProps {
 	searchParams: { [key: string]: string | string[] | undefined };
@@ -141,18 +144,22 @@ const ThankYouPage = async ({ searchParams }: PageProps) => {
 							</div>
 							<div className="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
 								<p className="text-base">Total</p>
-								<p className="text-base">
-									{formatPrice(TOTAL + 1)}
-								</p>
+								<p className="text-base">{formatPrice(TOTAL + 1)}</p>
 							</div>
 						</div>
-                        <div className="mt-16 border-gray-200 border-t py-6 text-right">
-                            <Link href="/products" className="text-sm font-medium text-pyrply hover:text-fuchsia-400">
-                                Continue Shopping&rarr;
-                                
-                            </Link>
-
-                        </div>
+						<PaymentStatus
+							orderEmail={(order.user as User).email}
+							orderId={order.id}
+							isPaid={order._isPaid}
+						/>
+						<div className="mt-16 border-gray-200 border-t py-6 text-right">
+							<Link
+								href="/products"
+								className="text-sm font-medium text-pyrply hover:text-fuchsia-400"
+							>
+								Continue Shopping&rarr;
+							</Link>
+						</div>
 					</div>
 				</div>
 			</div>

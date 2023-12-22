@@ -1,9 +1,10 @@
-import { router, privateProcedure } from "./trpc";
+import { router, privateProcedure, publicProcedure } from "./trpc";
 import { getPayloadClient } from "../get-payload";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { stripe } from "../lib/stripe";
 import type Stripe from "stripe";
+import { Orders } from "@/collections/Orders";
 
 export const checkoutRouter = router({
     //private procedure includes ctx which checks authorised status
@@ -85,6 +86,36 @@ export const checkoutRouter = router({
                 url: null
             }
             
+        }
+    }),
+
+    
+//is order paid or not? router
+
+    orderStatus: publicProcedure
+    .input(z.object({orderId: z.string()}))
+    .query(async ({input}) => {
+    
+        const { orderId } = input
+    
+        const payload = await getPayloadClient()
+    
+        const { docs: orders } = await payload.find({
+            collection: "orders",
+            where: {
+                id: {
+                    equals: orderId
+                }
+            }
+        })
+        if (!orders.length){
+            throw new TRPCError({code: "NOT_FOUND"})
+        }
+
+        //array destructuring
+        const [order]=orders
+        return {
+            isPaid: order._isPaid
         }
     })
 

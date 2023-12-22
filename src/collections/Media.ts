@@ -12,7 +12,7 @@ const isAdminOrHasImageAccess = ():Access => async ({ req }) => {
             return true
         }
         //access to user's images
-        return { user: { equals: req.user.id },
+        return { user: { equals: (req.user as User).id },
         }
     }
 
@@ -22,7 +22,7 @@ export const Media: CollectionConfig = {
     hooks: {
         beforeChange: [({req,data}) => {return {
             ...data,
-            user: req.user.id}
+            user: (req.user as User).id}
         }
     ],
 },

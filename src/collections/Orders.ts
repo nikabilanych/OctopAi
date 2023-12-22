@@ -1,5 +1,5 @@
 import { CollectionConfig, Access } from "payload/types";
-
+import { User } from "../payload-types";
 const yourOwnOrder: Access = ({ req: {user}}) => {
 
     if (user.role === "admin") {
@@ -34,7 +34,7 @@ export const Orders: CollectionConfig = {
             required: true,
 
             access: {
-                read: ({req}) => req.user.role === "admin",
+                read: ({req}) => (req.user as User).role === "admin",
                 create: () => false,
                 update: () => false,
             },

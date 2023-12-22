@@ -1,12 +1,11 @@
-import Link from "next/link";
+import ProductReel from "@/components/ProductReel";
 import Wrapper from "@/components/Wrapper";
 import { Button } from "@/components/ui/button";
-import { ArrowDownToLine, CheckCircle, Blocks, Gem, Leaf } from "lucide-react";
-import ProductReel from "@/components/ProductReel";
+import { ArrowDownToLine, Gem, Leaf } from "lucide-react";
+import Link from "next/link";
 
 export default async function Home() {
 	// const hello = await api.post.hello.query({ text: "from tRPC" });
-	const session = null;
 
 	const items = [
 		{

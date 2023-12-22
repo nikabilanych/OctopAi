@@ -4,21 +4,13 @@ import dotenv from "dotenv";
 import path from "path";
 import type { InitOptions } from "payload/config";
 import payload, { Payload } from "payload";
-import nodemailer from "nodemailer";
+import { transporter } from "./lib/email";
 
 dotenv.config({
     path: path.resolve(__dirname, "../.env"),
 });
-const transporter = nodemailer.createTransport({
-    service: "gmail",
-    host: "stmp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.EMAIL_SERVER_USER,
-      pass: process.env.EMAIL_SERVER_PASSWORD,
-    },
-  });
+
+
 //saving resourcing thanks to caching (esp during development)
 let cached = (global as any).payload;
 
@@ -35,6 +27,7 @@ interface Args {
 export const getPayloadClient = async ({initOptions}:Args = {}):Promise<Payload> => {if (!process.env.PAYLOAD_SECRET){
     throw new Error("Missing PAYLOAD_SECRET")
 }
+
 if (cached.client){
     return cached.client
 }

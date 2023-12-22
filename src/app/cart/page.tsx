@@ -29,7 +29,7 @@ const CartPage = () => {
 			onSuccess: ({ url }) => {
 				if (url) {
 					router.push(url);
-				}
+				} else console.log("something went wrong");
 			},
 		});
 
@@ -123,7 +123,6 @@ const CartPage = () => {
 													</div>
 
 													<div className="mt-4 sm:mt-0 sm:pr-9 w-20">
-														
 														<div className="absolute top-0 right-0">
 															<Button
 																aria-label="Remove product"
@@ -198,7 +197,9 @@ const CartPage = () => {
 								onClick={() => createCheckoutSession({ productIds })}
 								className="w-full"
 								size={"lg"}
-								disabled={items.length === 0 || isLoading}
+								disabled={
+									items.length === 0 || isLoading || isMounted === false
+								}
 								variant="default"
 							>
 								{isLoading ? (
